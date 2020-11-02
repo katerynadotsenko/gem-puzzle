@@ -2,13 +2,31 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
 .game-field {
     position: relative;
 }
 
 .tile {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.tile_number {
     border: 2px solid rgb(255, 255, 255);
     border-radius: 15px;
     background-color: rgb(109, 128, 168);
+    cursor: pointer;
+}
+
+.tile_empty {
+    background-color: transparent;
 }

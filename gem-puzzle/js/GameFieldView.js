@@ -1,16 +1,17 @@
 import TileView from './TileView.js';
 
 export default class GameFieldView {
-    constructor(gameFieldRowQuantity, tilesSize) {
+    constructor(gameFieldRowQuantity, tilesSize, tilesArr) {
         this.gameFieldRowQuantity = gameFieldRowQuantity;
         this.tilesSize = tilesSize;
+        this.tilesArr = tilesArr;
         this.gameFieldSize = this.tilesSize * this.gameFieldRowQuantity;
         this.gameField = '';
     }
 
-    init(tilesArr) {
+    init() {
         document.body.insertBefore(this.generateGameField(), document.body.childNodes[0]);
-        this.renderTilesToGameField(tilesArr);
+        this.renderTilesToGameField();
     }
 
     generateGameField() {
@@ -22,12 +23,12 @@ export default class GameFieldView {
         return this.gameField;
     }
 
-    renderTilesToGameField(tilesArr) {
-        const tileView = new TileView(this.tilesSize);
+    renderTilesToGameField() {
+        const tileView = new TileView(this.tilesSize, this.tilesArr);
 
         for (let i = 0; i < this.gameFieldRowQuantity; i++) {
             for (let j = 0; j < this.gameFieldRowQuantity; j++) {
-                this.gameField.append(tileView.generateTile(this.tilesSize * i, this.tilesSize * j, tilesArr[i][j]));
+                this.gameField.append(tileView.generateTile(i, j));
             }
         }
     }

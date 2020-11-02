@@ -4,15 +4,73 @@ let gameFieldRowQuantity = 4;
 let tilesSize = 100;
 let tilesArr = [];
 let moveHistory = [];
+let emptyPosition = {};
+
 //const tilesQuantity = gameFieldRowQuantity ** 2 - 1;
 
 window.onload = () => {
-    const gameFieldView = new GameFieldView(gameFieldRowQuantity, tilesSize);
-
     generateTilesArr();
     shuffleTilesArr();
 
-    gameFieldView.init(tilesArr);
+    const gameFieldView = new GameFieldView(gameFieldRowQuantity, tilesSize, tilesArr);
+    gameFieldView.init();
+
+    const tiles = document.querySelectorAll('[data-key]');
+
+    tiles.forEach(tile => {
+        tile.addEventListener('click', (e) => {
+            moveTile(e.target);
+        })
+    })
+     
+}
+
+function moveTile(tile) {
+    
+    if (Math.abs(emptyPosition.top - tile.dataset.top) > 1 || Math.abs(emptyPosition.left - tile.dataset.left) > 1) {
+        console.log('emptyPosition.top - ', emptyPosition.top);
+        console.log("emptyPosition.left - ", emptyPosition.left);
+        console.log("tile.dataset.top - ", tile.dataset.top);
+        console.log("tile.dataset.left - ", tile.dataset.left);
+        console.log("so far");
+        return;
+    } else if (Math.abs(emptyPosition.top - tile.dataset.top) !== 0 && Math.abs(emptyPosition.left - tile.dataset.left) !== 0) {
+        console.log('emptyPosition.top - ', emptyPosition.top);
+        console.log("emptyPosition.left - ", emptyPosition.left);
+        console.log("tile.dataset.top - ", tile.dataset.top);
+        console.log("tile.dataset.left - ", tile.dataset.left);
+        console.log("so far too");
+        return;
+    }
+
+    const tileArrPosTop = emptyPosition.top;
+    const tileArrPosLeft = emptyPosition.left;
+
+    //change positions in array
+
+    tilesArr[emptyPosition.top][emptyPosition.left] = tilesArr[tile.dataset.top][tile.dataset.left];
+    tilesArr[tile.dataset.top][tile.dataset.left] = 0;
+    emptyPosition.top = tile.dataset.top;
+    emptyPosition.left = tile.dataset.left;
+    
+   //change positions in DOM
+
+    const empty = document.querySelector('[data-key="0"]');
+    const emptyTop = tile.style.top;
+    const emptyLeft = tile.style.left;
+
+    tile.style.top = empty.style.top;
+    tile.style.left = empty.style.left;
+    tile.dataset.top = tileArrPosTop;
+    tile.dataset.left = tileArrPosLeft;
+    
+    empty.style.top = emptyTop;
+    empty.style.left = emptyLeft;
+    empty.dataset.top = emptyPosition.top;
+    empty.dataset.left = emptyPosition.left;
+
+    console.log("tilesArr - ", tilesArr);
+
 }
 
 function generateTilesArr() {
@@ -32,9 +90,9 @@ function generateTilesArr() {
 
 function shuffleTilesArr() {
     const shuffleSteps = 130;
-    let emptyPlacePosition = {
-        posI: gameFieldRowQuantity - 1, 
-        posJ: gameFieldRowQuantity - 1
+    emptyPosition = {
+        top: gameFieldRowQuantity - 1, 
+        left: gameFieldRowQuantity - 1
     };
     let moveDirection = 1;
 
@@ -46,40 +104,40 @@ function shuffleTilesArr() {
         //check possibility to move
         switch (moveDirection) {
             case 1:
-                moveDirection = emptyPlacePosition.posI < 1 ? 3 : 1;
+                moveDirection = emptyPosition.top < 1 ? 3 : 1;
                 break;
             case 2:
-                moveDirection = emptyPlacePosition.posJ >= gameFieldRowQuantity - 1 ? 4 : 2;
+                moveDirection = emptyPosition.left >= gameFieldRowQuantity - 1 ? 4 : 2;
                 break;
             case 3:
-                moveDirection = emptyPlacePosition.posI >= gameFieldRowQuantity - 1 ? 1 : 3;
+                moveDirection = emptyPosition.top >= gameFieldRowQuantity - 1 ? 1 : 3;
                 break;
             case 4:
-                moveDirection = emptyPlacePosition.posJ < 1 ? 2 : 4;
+                moveDirection = emptyPosition.left < 1 ? 2 : 4;
                 break;
         }
 
         //move
         switch (moveDirection) {
             case 1:
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ] = tilesArr[emptyPlacePosition.posI - 1][emptyPlacePosition.posJ];
-                tilesArr[emptyPlacePosition.posI - 1][emptyPlacePosition.posJ] = 0;
-                emptyPlacePosition.posI = emptyPlacePosition.posI - 1;
+                tilesArr[emptyPosition.top][emptyPosition.left] = tilesArr[emptyPosition.top - 1][emptyPosition.left];
+                tilesArr[emptyPosition.top - 1][emptyPosition.left] = 0;
+                emptyPosition.top = emptyPosition.top - 1;
                 break;
             case 2:
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ] = tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ + 1];
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ + 1] = 0;
-                emptyPlacePosition.posJ = emptyPlacePosition.posJ + 1;
+                tilesArr[emptyPosition.top][emptyPosition.left] = tilesArr[emptyPosition.top][emptyPosition.left + 1];
+                tilesArr[emptyPosition.top][emptyPosition.left + 1] = 0;
+                emptyPosition.left = emptyPosition.left + 1;
                 break;
             case 3:
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ] = tilesArr[emptyPlacePosition.posI + 1][emptyPlacePosition.posJ];
-                tilesArr[emptyPlacePosition.posI + 1][emptyPlacePosition.posJ] = 0;
-                emptyPlacePosition.posI = emptyPlacePosition.posI + 1;
+                tilesArr[emptyPosition.top][emptyPosition.left] = tilesArr[emptyPosition.top + 1][emptyPosition.left];
+                tilesArr[emptyPosition.top + 1][emptyPosition.left] = 0;
+                emptyPosition.top = emptyPosition.top + 1;
                 break;
             case 4:
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ] = tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ - 1];
-                tilesArr[emptyPlacePosition.posI][emptyPlacePosition.posJ - 1] = 0;
-                emptyPlacePosition.posJ = emptyPlacePosition.posJ - 1;
+                tilesArr[emptyPosition.top][emptyPosition.left] = tilesArr[emptyPosition.top][emptyPosition.left - 1];
+                tilesArr[emptyPosition.top][emptyPosition.left - 1] = 0;
+                emptyPosition.left = emptyPosition.left - 1;
                 break;
         }
 

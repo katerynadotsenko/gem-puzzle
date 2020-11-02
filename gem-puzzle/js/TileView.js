@@ -1,17 +1,28 @@
 export default class TileView {
-    constructor(size) {
+    constructor(size, tilesArr) {
         this.size = size;
+        this.tilesArr = tilesArr;
+        this.tile = '';
     }
 
-    generateTile(posX, posY, value) {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        tile.style.width = `${this.size}px`;
-        tile.style.height = `${this.size}px`;
-        tile.style.top = `${posX}px`;
-        tile.style.left = `${posY}px`;
-        tile.textContent = value;
+    generateTile(left, top) {
+        const value = this.tilesArr[top][left];
 
-        return tile;
+        this.tile = document.createElement('div');
+        this.tile.classList.add('tile', `${!value ? 'tile_empty' : 'tile_number'}`);
+        this.tile.style.width = `${this.size}px`;
+        this.tile.style.height = `${this.size}px`;
+        this.tile.style.top = `${top * this.size}px`;
+        this.tile.style.left = `${left * this.size}px`;
+
+        if (value !== 0) {
+            this.tile.textContent = value;
+        }
+
+        this.tile.dataset.key = value;
+        this.tile.dataset.top = top;
+        this.tile.dataset.left = left;
+
+        return this.tile;
     }
 }
