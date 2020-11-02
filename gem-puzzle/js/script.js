@@ -18,12 +18,76 @@ window.onload = () => {
     const tiles = document.querySelectorAll('[data-key]');
 
     tiles.forEach(tile => {
+
+        if (tile.dataset.key == 0) return;
+
         tile.addEventListener('click', (e) => {
             moveTile(e.target);
-        })
-    })
+        });
+
+        tile.onmousedown = (e) => {
+            //return;
+            let currentDroppable = null;
+            let shiftX = e.clientX - tile.getBoundingClientRect().left;
+            let shiftY = e.clientY - tile.getBoundingClientRect().top;
+
+            tile.style.zIndex = 1000;
+            document.body.append(tile);
+            moveAt(e.pageX, e.pageY);
+
+            function moveAt (pageX, pageY) {
+                tile.style.left = pageX - shiftX + 'px';
+                tile.style.top = pageY - shiftY + 'px';
+            }
+
+            function onMouseMove(e) {
+                moveAt(e.pageX, e.pageY);
+                tile.hidden = true;
+                //let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+                tile.hidden = false;
+                
+               // if (!elemBelow) return;
+
+                let droppableBelow = document.querySelector('[data-key="0"]');
+
+                if (currentDroppable != droppableBelow) {
+                
+                    if (currentDroppable) {
+                      leaveDroppable(currentDroppable);
+                    }
+                    currentDroppable = droppableBelow;
+                    if (currentDroppable) {
+                      enterDroppable(currentDroppable);
+                    }
+                  }
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            tile.onmouseup = () => {
+                document.removeEventListener('mousemove', onMouseMove);
+                //TODO if ton in place
+                document.querySelector('.game-field').append(tile);
+                moveTile(tile);
+                tile.onmouseup = null;
+            };
+
+            function enterDroppable(elem) {
+                elem.style.background = 'pink';
+            }
+          
+            function leaveDroppable(elem) {
+                elem.style.background = 'transparent';
+            }
+    
+            tile.ondragstart = function() {
+                return false;
+            };
+        };
+    });
      
 }
+
 
 function moveTile(tile) {
     
@@ -43,8 +107,12 @@ function moveTile(tile) {
         return;
     }
 
-    const tileArrPosTop = emptyPosition.top;
-    const tileArrPosLeft = emptyPosition.left;
+    const empty = document.querySelector('[data-key="0"]');
+
+    const tileArrPosTop = tile.dataset.top;
+    const tileArrPosLeft = tile.dataset.left;
+    const emptyArrPosTop = empty.dataset.top;
+    const emptyArrPosLeft = empty.dataset.left;
 
     //change positions in array
 
@@ -54,20 +122,15 @@ function moveTile(tile) {
     emptyPosition.left = tile.dataset.left;
     
    //change positions in DOM
-
-    const empty = document.querySelector('[data-key="0"]');
-    const emptyTop = tile.style.top;
-    const emptyLeft = tile.style.left;
-
-    tile.style.top = empty.style.top;
-    tile.style.left = empty.style.left;
-    tile.dataset.top = tileArrPosTop;
-    tile.dataset.left = tileArrPosLeft;
+    tile.style.top = `${Number(emptyArrPosTop) * tilesSize}px`;
+    tile.style.left = `${Number(emptyArrPosLeft) * tilesSize}px`;
+    tile.dataset.top = emptyArrPosTop;
+    tile.dataset.left = emptyArrPosLeft;
     
-    empty.style.top = emptyTop;
-    empty.style.left = emptyLeft;
-    empty.dataset.top = emptyPosition.top;
-    empty.dataset.left = emptyPosition.left;
+    empty.style.top = `${Number(tileArrPosTop) * tilesSize}px`;
+    empty.style.left = `${Number(tileArrPosLeft) * tilesSize}px`;
+    empty.dataset.top = tileArrPosTop;
+    empty.dataset.left = tileArrPosLeft;
 
     console.log("tilesArr - ", tilesArr);
 
