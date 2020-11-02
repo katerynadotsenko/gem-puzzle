@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+.game-field {
+    position: relative;
+}
+
+.tile {
+    position: absolute;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 15px;
+    background-color: rgb(109, 128, 168);
+}
