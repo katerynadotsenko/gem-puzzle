@@ -8,9 +8,9 @@ export default class GameFieldView {
         this.gameField = '';
     }
 
-    init() {
+    init(tilesArr) {
         document.body.insertBefore(this.generateGameField(), document.body.childNodes[0]);
-        this.renderTilesToGameField();
+        this.renderTilesToGameField(tilesArr);
     }
 
     generateGameField() {
@@ -22,12 +22,12 @@ export default class GameFieldView {
         return this.gameField;
     }
 
-    renderTilesToGameField() {
+    renderTilesToGameField(tilesArr) {
         const tileView = new TileView(this.tilesSize);
 
         for (let i = 0; i < this.gameFieldRowQuantity; i++) {
             for (let j = 0; j < this.gameFieldRowQuantity; j++) {
-                this.gameField.append(tileView.generateTile(this.tilesSize * i, this.tilesSize * j));
+                this.gameField.append(tileView.generateTile(this.tilesSize * i, this.tilesSize * j, tilesArr[i][j]));
             }
         }
     }
