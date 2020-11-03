@@ -57,13 +57,13 @@ window.onload = () => {
 
         if (tile.dataset.key == 0) return;
 
-        tile.addEventListener('click', (e) => {
-            moveTile(e.target);
-        });
-
         tile.onmousedown = (e) => {
-            //return;
+            if (e.which != 1) return;
+            const startPosLeft = e.pageX;
+            const startPosTop = e.pageY;
+
             let currentDroppable = null;
+            let isTileNeededToMove = true;
             let shiftX = e.clientX - tile.getBoundingClientRect().left;
             let shiftY = e.clientY - tile.getBoundingClientRect().top;
 
@@ -77,43 +77,51 @@ window.onload = () => {
             }
 
             function onMouseMove(e) {
+                isTileNeededToMove = false;
                 moveAt(e.pageX, e.pageY);
-                tile.hidden = true;
+
+                tile.style.visibility = 'hidden';
                 let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
-                tile.hidden = false;
+                tile.style.visibility = 'visible';
                 
                 if (!elemBelow) return;
 
-                let droppableBelow = document.querySelector('[data-key="0"]');
+                let droppableBelow = elemBelow.closest('[data-key="0"]');
 
                 if (currentDroppable != droppableBelow) {
                 
                     if (currentDroppable) {
-                      leaveDroppable(currentDroppable);
+                        leaveDroppable(currentDroppable);
                     }
                     currentDroppable = droppableBelow;
                     if (currentDroppable) {
-                      enterDroppable(currentDroppable);
+                        enterDroppable(currentDroppable);
                     }
-                  }
+                } else if (currentDroppable !== null && droppableBelow !== null) {
+                    isTileNeededToMove = true;
+                }
             }
 
             document.addEventListener('mousemove', onMouseMove);
 
-            tile.onmouseup = () => {
+            tile.onmouseup = (e) => {
+                if (Math.abs(e.pageX - startPosLeft) < 10 && Math.abs(e.pageY - startPosTop) < 10) {
+                    isTileNeededToMove = true;
+                }
                 document.removeEventListener('mousemove', onMouseMove);
-                //TODO if ton in place
                 document.querySelector('.game-field').append(tile);
-                moveTile(tile);
+                moveTile(tile, isTileNeededToMove);
                 tile.onmouseup = null;
             };
 
             function enterDroppable(elem) {
                 elem.style.background = 'pink';
+                isTileNeededToMove = true;
             }
           
             function leaveDroppable(elem) {
                 elem.style.background = 'transparent';
+                isTileNeededToMove = false;
             }
     
             tile.ondragstart = function() {
@@ -125,21 +133,24 @@ window.onload = () => {
 }
 
 
-function moveTile(tile) {
+function moveTile(tile, isTileNeededToMove=true) {
     
-    if (Math.abs(emptyPosition.top - tile.dataset.top) > 1 || Math.abs(emptyPosition.left - tile.dataset.left) > 1) {
+    if ((Math.abs(emptyPosition.top - tile.dataset.top) > 1 || Math.abs(emptyPosition.left - tile.dataset.left) > 1)
+        || (Math.abs(emptyPosition.top - tile.dataset.top) !== 0 && Math.abs(emptyPosition.left - tile.dataset.left) !== 0)
+        || !isTileNeededToMove) {
         console.log('emptyPosition.top - ', emptyPosition.top);
         console.log("emptyPosition.left - ", emptyPosition.left);
         console.log("tile.dataset.top - ", tile.dataset.top);
         console.log("tile.dataset.left - ", tile.dataset.left);
         console.log("so far");
-        return;
-    } else if (Math.abs(emptyPosition.top - tile.dataset.top) !== 0 && Math.abs(emptyPosition.left - tile.dataset.left) !== 0) {
-        console.log('emptyPosition.top - ', emptyPosition.top);
-        console.log("emptyPosition.left - ", emptyPosition.left);
-        console.log("tile.dataset.top - ", tile.dataset.top);
-        console.log("tile.dataset.left - ", tile.dataset.left);
-        console.log("so far too");
+
+        const empty = document.querySelector('[data-key="0"]');
+        empty.style.top = `${empty.dataset.top * tilesSize}px`;
+        empty.style.left = `${empty.dataset.left * tilesSize}px`;
+
+        tile.style.top = `${tile.dataset.top * tilesSize}px`;
+        tile.style.left = `${tile.dataset.left * tilesSize}px`;
+
         return;
     }
 
@@ -170,9 +181,10 @@ function moveTile(tile) {
 
     moves++;
 
+    empty.style.background = 'transparent';
+
     const infoField = new InfoField();
     infoField.updateMovesField();
-    console.log("moves - ", moves);
 
 }
 
@@ -188,7 +200,6 @@ function generateTilesArr() {
         }
         tilesArr.push(numberArr);
     }
-    //console.log("tilesArr - ", tilesArr);
 }
 
 function shuffleTilesArr() {
