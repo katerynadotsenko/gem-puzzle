@@ -5,8 +5,41 @@ let tilesSize = 100;
 let tilesArr = [];
 let moveHistory = [];
 let emptyPosition = {};
+let moves = 0;
 
 //const tilesQuantity = gameFieldRowQuantity ** 2 - 1;
+
+class InfoField {
+    constructor() {
+
+    }
+
+    init() {
+        this.startTimer();
+        this.updateMovesField();
+    }
+
+    updateMovesField() {
+        const movesField = document.querySelector('.info__moves').lastElementChild;
+        movesField.innerText = moves;
+    }
+    startTimer() {
+        const timer = document.querySelector('.info__time').lastElementChild;
+
+        let time = 0,
+            hours = 0,
+            minutes = 0,
+            seconds = 0;
+
+        setInterval(() => {
+            hours = Math.trunc(time/60/60%60);
+            minutes = Math.trunc(time/60%60);
+            seconds = time%60;
+            timer.innerText = `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`;
+            time++;
+        }, 1000);
+    }
+}
 
 window.onload = () => {
     generateTilesArr();
@@ -14,6 +47,9 @@ window.onload = () => {
 
     const gameFieldView = new GameFieldView(gameFieldRowQuantity, tilesSize, tilesArr);
     gameFieldView.init();
+
+    const infoField = new InfoField();
+    infoField.init();
 
     const tiles = document.querySelectorAll('[data-key]');
 
@@ -43,10 +79,10 @@ window.onload = () => {
             function onMouseMove(e) {
                 moveAt(e.pageX, e.pageY);
                 tile.hidden = true;
-                //let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
+                let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
                 tile.hidden = false;
                 
-               // if (!elemBelow) return;
+                if (!elemBelow) return;
 
                 let droppableBelow = document.querySelector('[data-key="0"]');
 
@@ -132,7 +168,11 @@ function moveTile(tile) {
     empty.dataset.top = tileArrPosTop;
     empty.dataset.left = tileArrPosLeft;
 
-    console.log("tilesArr - ", tilesArr);
+    moves++;
+
+    const infoField = new InfoField();
+    infoField.updateMovesField();
+    console.log("moves - ", moves);
 
 }
 
