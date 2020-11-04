@@ -1,18 +1,18 @@
-import InfoField from './InfoField.js';
-
 export default class Tiles {
 
-    constructor(gameFieldRowQuantity, tilesSize) {
+    constructor(gameFieldRowQuantity, tilesSize, updateMovesFieldFunc) {
 
         this.gameFieldRowQuantity = gameFieldRowQuantity;
         this.tilesSize = tilesSize;
-        this.moves = 0;
+        this.updateMovesField = updateMovesFieldFunc;
         this.tilesArr = [];
         this.moveHistory = [];
-
+        this.infoField = null;
     }
 
     init() {
+
+        this.tilesArr = [];
 
         this.generateTilesArr();
         this.shuffleTilesArr();
@@ -64,7 +64,7 @@ export default class Tiles {
             let shiftX = e.clientX - tile.getBoundingClientRect().left;
             let shiftY = e.clientY - tile.getBoundingClientRect().top;
 
-            tile.style.zIndex = 3;
+            tile.style.zIndex = 5;
             document.body.append(tile);
             moveAt(e.pageX, e.pageY);
 
@@ -81,7 +81,10 @@ export default class Tiles {
                 let elemBelow = document.elementFromPoint(e.clientX, e.clientY);
                 tile.style.visibility = 'visible';
                 
-                if (!elemBelow) return;
+                if (!elemBelow) {
+                    console.log("elemBelow outside");
+                    return;
+                }
 
                 let droppableBelow = elemBelow.closest('[data-key="0"]');
 
@@ -107,8 +110,9 @@ export default class Tiles {
                 }
                 document.removeEventListener('mousemove', onMouseMove);
                 document.querySelector('.game-field').append(tile);
-                this.moveTile(tile, isTileNeededToMove);
                 tile.onmouseup = null;
+                this.moveTile(tile, isTileNeededToMove);
+                tile.style.zIndex = 4;
             };
 
             function enterDroppable(elem) {
@@ -175,7 +179,7 @@ export default class Tiles {
         tile.style.left = `${Number(emptyArrPosLeft) * this.tilesSize}px`;
         tile.dataset.top = emptyArrPosTop;
         tile.dataset.left = emptyArrPosLeft;
-
+        //TODO check bugs if use drag & drop
         tile.animate([
             { top: tilePosX,  left: tilePosY},
             { top: `${Number(emptyArrPosTop) * this.tilesSize}px`,  left: `${Number(emptyArrPosLeft) * this.tilesSize}px`}
@@ -190,12 +194,9 @@ export default class Tiles {
         empty.dataset.top = tileArrPosTop;
         empty.dataset.left = tileArrPosLeft;
     
-        this.moves++;
-    
         empty.style.background = 'transparent';
-    
-        const infoField = new InfoField();
-        infoField.updateMovesField(this.moves);
+  
+        this.updateMovesField();
     
     }
 
@@ -218,10 +219,18 @@ export default class Tiles {
     shuffleTilesArr() {
 
         const shuffleSteps = 130;
-        let emptyPosition = {
-            top: this.gameFieldRowQuantity - 1, 
-            left: this.gameFieldRowQuantity - 1
-        };
+        let emptyPosition = {};
+
+       this.tilesArr.forEach((array, top) => {
+            array.forEach((item, left) => {
+                if (item == 0) {
+                    emptyPosition.top = top;
+                    emptyPosition.left = left;
+                };
+            });
+        });
+        console.log("emptyPosition - ", emptyPosition);
+
         let moveDirection = 1;
     
         for (let i = 0; i < shuffleSteps; i++) {

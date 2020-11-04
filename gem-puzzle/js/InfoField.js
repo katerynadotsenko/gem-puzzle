@@ -2,6 +2,7 @@ export default class InfoField {
     constructor() {
         this.time = 1;
         this.timer = null;
+        this.moves = 1;
     }
 
     init() {
@@ -11,7 +12,9 @@ export default class InfoField {
         const infoMenu = document.querySelector('.info__menu-button');
         infoMenu.addEventListener('click', (e) => {
             this.toggleMenu(e.target);
-        })
+        });
+
+
     }
 
     toggleMenu(infoMenu) {
@@ -31,9 +34,12 @@ export default class InfoField {
         movesField.innerText = moves;
     }
 
-    startTimer() {
+    updateTimerField(time) {
         const timerElement = document.querySelector('.info__time').lastElementChild;
+        timerElement.innerText = time;
+    }
 
+    startTimer() {
         let hours = 0,
             minutes = 0,
             seconds = 0;
@@ -42,7 +48,7 @@ export default class InfoField {
             hours = Math.trunc(this.time/60/60%60);
             minutes = Math.trunc(this.time/60%60);
             seconds = this.time%60;
-            timerElement.innerText = `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`;
+            this.updateTimerField(`${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`);
             this.time++;
         }, 1000);
     }
@@ -54,6 +60,7 @@ export default class InfoField {
     stopTimer() {
         clearInterval(this.timer);
         this.time = 1;
+        this.updateTimerField('00:00:00');
     }
 
 }

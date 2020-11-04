@@ -3,10 +3,9 @@ import InfoFieldView from './InfoFieldView.js';
 import MenuView from './MenuView.js';
 
 export default class GameFieldView {
-    constructor(gameFieldRowQuantity, tilesSize, tilesArr) {
+    constructor(gameFieldRowQuantity, tilesSize) {
         this.gameFieldRowQuantity = gameFieldRowQuantity;
         this.tilesSize = tilesSize;
-        this.tilesArr = tilesArr;
         this.gameFieldSize = this.tilesSize * this.gameFieldRowQuantity;
         this.gameField = '';
     }
@@ -16,8 +15,7 @@ export default class GameFieldView {
         infoFieldView.init();
 
         document.body.insertBefore(this.generateGameField(), document.body.childNodes[1]);
-        this.renderTilesToGameField();
-
+        
         const menuView = new MenuView(this.gameField);
         menuView.init();
     }
@@ -31,8 +29,15 @@ export default class GameFieldView {
         return this.gameField;
     }
 
-    renderTilesToGameField() {
-        const tileView = new TileView(this.tilesSize, this.tilesArr);
+    clearGameField() {
+        //const menu = document.querySelector('.menu');
+        this.gameField.querySelectorAll('[data-key]').forEach(item => {
+            item.remove();
+        });
+    }
+
+    renderTilesToGameField(tilesArr) {
+        const tileView = new TileView(this.tilesSize, tilesArr);
 
         for (let i = 0; i < this.gameFieldRowQuantity; i++) {
             for (let j = 0; j < this.gameFieldRowQuantity; j++) {
