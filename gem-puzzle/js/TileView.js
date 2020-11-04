@@ -10,6 +10,7 @@ export default class TileView {
 
         this.tile = document.createElement('div');
         this.tile.classList.add('tile', `${!value ? 'tile_empty' : 'tile_number'}`);
+        this.tile.draggable = true;
         this.tile.style.width = `${this.size}px`;
         this.tile.style.height = `${this.size}px`;
         this.tile.style.top = `${top * this.size}px`;

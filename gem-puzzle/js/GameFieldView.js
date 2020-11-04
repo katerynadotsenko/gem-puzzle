@@ -1,5 +1,6 @@
 import TileView from './TileView.js';
 import InfoFieldView from './InfoFieldView.js';
+import MenuView from './MenuView.js';
 
 export default class GameFieldView {
     constructor(gameFieldRowQuantity, tilesSize, tilesArr) {
@@ -11,11 +12,14 @@ export default class GameFieldView {
     }
 
     init() {
-        const infoFieldView = new InfoFieldView();
-        infoFieldView.renderInfoFieldToDom(this.gameFieldSize);
+        const infoFieldView = new InfoFieldView(this.gameFieldSize);
+        infoFieldView.init();
 
         document.body.insertBefore(this.generateGameField(), document.body.childNodes[1]);
         this.renderTilesToGameField();
+
+        const menuView = new MenuView(this.gameField);
+        menuView.init();
     }
 
     generateGameField() {

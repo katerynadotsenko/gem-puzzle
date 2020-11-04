@@ -25,6 +25,35 @@ export default class Tiles {
 
         if (tile.dataset.key == 0) return;
 
+        /*const handleDragEnd = (e) => {
+            e.preventDefault();
+            let data = e.dataTransfer.getData("tile");
+            this.moveTile(document.querySelector(`[data-key="${data}"]`));
+        }
+
+        const handleDragStart = (e) => {
+            e.dataTransfer.setData("tile", e.target.dataset.key);
+        }
+
+        if (tile.dataset.key == 0) {
+            tile.draggable = false;
+            tile.addEventListener('drop', handleDragEnd, false);
+            tile.addEventListener('dragover', (e) => e.preventDefault());
+            return;
+        };
+
+        tile.addEventListener('click', (e) => {
+            this.moveTile(e.target);
+        });
+
+        tile.addEventListener('dragstart', handleDragStart, false);*/
+
+        
+
+      
+        
+          
+
         tile.onmousedown = (e) => {
             if (e.which != 1) return;
             const startPosLeft = e.pageX;
@@ -35,7 +64,7 @@ export default class Tiles {
             let shiftX = e.clientX - tile.getBoundingClientRect().left;
             let shiftY = e.clientY - tile.getBoundingClientRect().top;
 
-            tile.style.zIndex = 1000;
+            tile.style.zIndex = 3;
             document.body.append(tile);
             moveAt(e.pageX, e.pageY);
 
@@ -137,11 +166,24 @@ export default class Tiles {
 
         
        // 2 change positions in DOM
-    
+
+       const gameField = document.querySelector('.game-field');
+       const tilePosX = `${tile.offsetTop - gameField.offsetTop}px`;
+       const tilePosY = `${tile.offsetLeft - gameField.offsetLeft}px`;
+
         tile.style.top = `${Number(emptyArrPosTop) * this.tilesSize}px`;
         tile.style.left = `${Number(emptyArrPosLeft) * this.tilesSize}px`;
         tile.dataset.top = emptyArrPosTop;
         tile.dataset.left = emptyArrPosLeft;
+
+        tile.animate([
+            { top: tilePosX,  left: tilePosY},
+            { top: `${Number(emptyArrPosTop) * this.tilesSize}px`,  left: `${Number(emptyArrPosLeft) * this.tilesSize}px`}
+            
+          ], {
+            duration: 300,
+            animationFillMode: 'forward'
+          });
         
         empty.style.top = `${Number(tileArrPosTop) * this.tilesSize}px`;
         empty.style.left = `${Number(tileArrPosLeft) * this.tilesSize}px`;
