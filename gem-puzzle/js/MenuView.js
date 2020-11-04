@@ -1,27 +1,42 @@
 export default class MenuView {
     constructor(gameField) {
-        this.menu = '';
         this.gameField = gameField;
     }
 
     init() {
-        this.generateMenuView();
         this.renderMenuToDom();
     }
 
     generateMenuView() {
-        this.menu = document.createElement('div');
-        this.menu.classList.add('menu');
-        this.menu.innerHTML = `<ul class="menu__list">
+        let menu = document.createElement('div');
+        menu.classList.add('menu');
+        menu.innerHTML = `<ul class="menu__list menu_active">
                                 <li id="save">Save Game</li>
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
                                 <li id="settings">Settings</li>
                               </ul>`;
-        return this.menu;
+        return menu;
+    }
+
+    generateSaveGamesView() {
+        let savedGames = document.createElement('div');
+        savedGames.classList.add('menu__saved-games', 'menu_hidden');
+        savedGames.innerHTML = `saved games`;
+        return savedGames;
+    }
+
+    generateWinView() {
+        let win = document.createElement('div');
+        win.classList.add('menu__win', 'menu_hidden');
+        win.innerHTML = `<div>Hurray! You solved the puzzle for<br><span class="win__time"></span> and <span class="win__moves"></span> moves</div>`;
+        return win;
     }
 
     renderMenuToDom() {
-        this.gameField.append(this.menu);
+        let menu = this.generateMenuView();
+        menu.append(this.generateSaveGamesView());
+        menu.append(this.generateWinView());
+        this.gameField.append(menu);
     }
 }

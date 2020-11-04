@@ -1,10 +1,11 @@
 export default class Tiles {
 
-    constructor(gameFieldRowQuantity, tilesSize, updateMovesFieldFunc) {
+    constructor(gameFieldRowQuantity, tilesSize, updateMovesFieldFunc, checkIsWinFunc) {
 
         this.gameFieldRowQuantity = gameFieldRowQuantity;
         this.tilesSize = tilesSize;
         this.updateMovesField = updateMovesFieldFunc;
+        this.checkIsWin = checkIsWinFunc;
         this.tilesArr = [];
         this.moveHistory = [];
         this.infoField = null;
@@ -20,6 +21,8 @@ export default class Tiles {
         return this.tilesArr;
 
     }
+
+
 
     bindTileListeners(tile) {
 
@@ -112,6 +115,7 @@ export default class Tiles {
                 document.querySelector('.game-field').append(tile);
                 tile.onmouseup = null;
                 this.moveTile(tile, isTileNeededToMove);
+                this.checkIsWin();
                 tile.style.zIndex = 4;
             };
 

@@ -16,18 +16,12 @@ html {
     font-size: 1.6rem;
 }
 
-.info__menu-button.active {
-    background-color: red;
-}
-
 .info.active+.game-field .menu {
     top: 0;
 }
 
 .menu {
     position: absolute;
-    display: flex;
-    align-items: center;
     top: -100%;
     left: 0;
     background-color: rgb(0, 0, 0, .8);
@@ -35,6 +29,21 @@ html {
     height: 100%;
     transition: top .5s ease-in-out;
     z-index: 5;
+}
+
+.menu_active {
+    position: absolute;
+    width: 100%;
+    padding: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.menu_hidden {
+    position: absolute;
+    top: 0;
+    left: 100%;
 }
 
 .menu__list {
@@ -47,6 +56,17 @@ html {
     color: #fff;
     font-size: 2rem;
     list-style: none;
+}
+
+.menu__saved-games {
+    color: #fff;
+    font-size: 2rem;
+}
+
+.menu__win {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .menu__list li {
