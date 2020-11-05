@@ -5,11 +5,12 @@ export default class Menu {
 
     MenuView;
 
-    constructor(saveGameCallback, startNewGame, loadSavedGame) {
+    constructor(saveGameCallback, startNewGame, loadSavedGame, changeFieldSize) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
         this.loadSavedGame = loadSavedGame;
+        this.changeFieldSize = changeFieldSize;
         this.menuView = new MenuView();
     }
 
@@ -52,8 +53,17 @@ export default class Menu {
 
         const menuSavedGames = this.menuView.generateSavedGamesView();
         const win = this.menuView.generateWinView();
+        const menuSettings = this.menuView.generateSettingsView();
+        menuSettings.children[1].addEventListener('change', (e) => {
+            this.changeFieldSize(e.target.value);
+            this.startNewGame();
+        })
 
-        this.menuView.renderMenuToDom(menuList, menuSavedGames, win);
+        this.menuView.renderMenuToDom(menuList, menuSavedGames, win, menuSettings);
+    }
+
+    showSettings() {
+        this.menuView.changeActiveMenu('.menu__settings');
     }
 
     bindMenuItemListeners(item) {
@@ -70,7 +80,7 @@ export default class Menu {
                     this.showSavedGames();
                 break;
                 case 'settings':
-                    console.log('settings')
+                    this.showSettings();
                 break;
                 default:
                 break;

@@ -1,25 +1,35 @@
+import TileView from './TileView.js';
+
+
 export default class Tiles {
 
-    constructor(gameFieldRowQuantity, tilesSize, updateMovesFieldFunc, checkIsWinFunc) {
+    constructor(tilesSize, updateMovesFieldFunc, checkIsWinFunc) {
 
-        this.gameFieldRowQuantity = gameFieldRowQuantity;
         this.tilesSize = tilesSize;
         this.updateMovesField = updateMovesFieldFunc;
         this.checkIsWin = checkIsWinFunc;
         this.tilesArr = [];
         this.moveHistory = [];
         this.infoField = null;
+        this.tileView = new TileView();
     }
 
-    init() {
+    init(gameFieldRowQuantity) {
 
         this.tilesArr = [];
 
-        this.generateTilesArr();
-        this.shuffleTilesArr();
+        this.generateTilesArr(gameFieldRowQuantity);
+        console.log("tiles init - ", this.tilesArr);
+        this.shuffleTilesArr(gameFieldRowQuantity);
+        this.loadTiles(gameFieldRowQuantity, this.tilesArr);
 
         return this.tilesArr;
 
+    }
+
+    loadTiles(gameFieldRowQuantity, tilesArr) {
+        console.log(tilesArr);
+        this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, this.tilesSize);
     }
 
 
@@ -204,15 +214,14 @@ export default class Tiles {
     
     }
 
-    generateTilesArr() {
-
+    generateTilesArr(gameFieldRowQuantity) {
         let numberArr = [];
         let number = 0;
-        for (let i = 0; i < this.gameFieldRowQuantity; i++) {
+        for (let i = 0; i < gameFieldRowQuantity; i++) {
             numberArr = [];
-            for (let j = 0; j < this.gameFieldRowQuantity; j++) {
-                number = j + i * this.gameFieldRowQuantity + 1;
-                number = number > this.gameFieldRowQuantity ** 2 - 1 ? 0 : number;
+            for (let j = 0; j < gameFieldRowQuantity; j++) {
+                number = j + i * gameFieldRowQuantity + 1;
+                number = number > gameFieldRowQuantity ** 2 - 1 ? 0 : number;
                 numberArr.push(number);
             }
             this.tilesArr.push(numberArr);
@@ -220,10 +229,13 @@ export default class Tiles {
 
     }
     
-    shuffleTilesArr() {
-
-        const shuffleSteps = 130;
+    shuffleTilesArr(gameFieldRowQuantity) {
+        
+        const shuffleSteps = gameFieldRowQuantity ** 2 * 70;
+        console.log("shuffleSteps - ", shuffleSteps);
         let emptyPosition = {};
+        let prevStep = null;
+        let prevPrevStep = null;
 
        this.tilesArr.forEach((array, top) => {
             array.forEach((item, left) => {
@@ -241,6 +253,16 @@ export default class Tiles {
     
             //generate move direction: 1 - top, 2 - right, 3 - bottom, 4 - left
             moveDirection = Math.floor(Math.random() * 4) + 1;
+            
+            //check direction to prevent repeated steps
+            if (prevPrevStep === moveDirection) {
+                if (prevStep%2 && prevPrevStep%2) {
+                    moveDirection = 1;
+                } else if (!prevStep%2 && !prevPrevStep%2) {
+                    moveDirection = 2;
+                }
+            }
+
     
             //check possibility to move
             switch (moveDirection) {
@@ -248,15 +270,16 @@ export default class Tiles {
                     moveDirection = emptyPosition.top < 1 ? 3 : 1;
                     break;
                 case 2:
-                    moveDirection = emptyPosition.left >= this.gameFieldRowQuantity - 1 ? 4 : 2;
+                    moveDirection = emptyPosition.left >= gameFieldRowQuantity - 1 ? 4 : 2;
                     break;
                 case 3:
-                    moveDirection = emptyPosition.top >= this.gameFieldRowQuantity - 1 ? 1 : 3;
+                    moveDirection = emptyPosition.top >= gameFieldRowQuantity - 1 ? 1 : 3;
                     break;
                 case 4:
                     moveDirection = emptyPosition.left < 1 ? 2 : 4;
                     break;
             }
+
     
             //move
             switch (moveDirection) {
@@ -283,6 +306,8 @@ export default class Tiles {
             }
     
             this.moveHistory.push(moveDirection);
+            prevPrevStep = prevStep;
+            prevStep = moveDirection;
         }
         console.log("this.tilesArr - ", this.tilesArr);
         console.log("this.moveHistory - ", this.moveHistory);

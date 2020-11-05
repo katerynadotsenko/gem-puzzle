@@ -69,6 +69,12 @@ html {
     text-align: center;
 }
 
+.menu__settings {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+}
+
 .menu__list li {
     cursor: pointer;
 }

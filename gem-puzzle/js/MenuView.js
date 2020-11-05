@@ -63,9 +63,8 @@ export default class MenuView {
         savedGames.forEach(game => {
             savedGamesList += `<div>${this.generateSavedGameView(game)}</div>`;
         });
-        console.log(savedGamesList);
         menuSavedGames.innerHTML = `${savedGamesList}`;
-        menuSavedGames.append(this.generateGoBackButton())
+        menuSavedGames.append(this.generateGoBackButton());
     }
 
     generateSavedGameView(game) {
@@ -89,13 +88,31 @@ export default class MenuView {
         win.append(this.generateGoBackButton());
     }
 
-    renderMenuToDom(menuList, menuSavedGames, win) {
+    generateSettingsView() {
+        let settings = document.createElement('div');
+        settings.classList.add('menu__settings', 'menu_hidden');
+        settings.innerHTML = `<label for="field-size">Choose field size:</label>
+                                <select name="field-size" id="field-size">
+                                    <option value="3">3х3</option>
+                                    <option value="4">4х4</option>
+                                    <option value="5">5х5</option>
+                                    <option value="6">6х6</option>
+                                    <option value="7">7х7</option>
+                                    <option value="8">8х8</option>
+                                </select><br>`;
+        settings.append(this.generateGoBackButton());
+
+        return settings;
+    }
+
+    renderMenuToDom(menuList, menuSavedGames, win, menuSettings) {
         const gameField = document.querySelector('.game-field');
         const menu = this.generateMenuView();
 
         menu.append(menuList);
         menu.append(menuSavedGames);
         menu.append(win);
+        menu.append(menuSettings);
 
         gameField.append(menu);
     }
