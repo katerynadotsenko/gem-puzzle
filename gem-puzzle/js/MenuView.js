@@ -1,42 +1,102 @@
 export default class MenuView {
-    constructor(gameField) {
-        this.gameField = gameField;
+    constructor() {
+
     }
 
     init() {
         this.renderMenuToDom();
     }
 
+
+    changeActiveMenu(menu) {
+        const gameMenu = document.querySelector('.menu');
+        gameMenu.childNodes.forEach(item => {
+            item.classList.remove('menu_active');
+            item.classList.add('menu_hidden');
+        });
+
+        const menuElement = document.querySelector(menu);
+        menuElement.classList.toggle('menu_active');
+        menuElement.classList.toggle('menu_hidden');
+    }
+
+    generateGoBackButton() {
+        let goBackButton = document.createElement('button');
+        goBackButton.innerText = 'go back';
+
+        goBackButton.addEventListener('click', () => {
+            this.changeActiveMenu('.menu__list');
+        });
+
+        return goBackButton;
+    }
+
+
     generateMenuView() {
         let menu = document.createElement('div');
         menu.classList.add('menu');
-        menu.innerHTML = `<ul class="menu__list menu_active">
-                                <li id="save">Save Game</li>
-                                <li id="new-game">New Game</li>
-                                <li id="saved-games">Saved Games</li>
-                                <li id="settings">Settings</li>
-                              </ul>`;
+        
         return menu;
     }
 
-    generateSaveGamesView() {
-        let savedGames = document.createElement('div');
-        savedGames.classList.add('menu__saved-games', 'menu_hidden');
-        savedGames.innerHTML = `saved games`;
-        return savedGames;
+    generateMenuListView() {
+        const menuList = document.createElement('ul');
+        menuList.classList.add('menu__list', 'menu_active');
+        menuList.innerHTML = `<li id="save">Save Game</li>
+                                <li id="new-game">New Game</li>
+                                <li id="saved-games">Saved Games</li>
+                                <li id="settings">Settings</li>`;
+        return menuList;
+    }
+
+
+    generateSavedGamesView() {
+        const menuSavedGames = document.createElement('div');
+        menuSavedGames.classList.add('menu__saved-games', 'menu_hidden');
+        
+        return menuSavedGames;
+    }
+
+    updateSavedGamesView(savedGames) {
+        const menuSavedGames = document.querySelector('.menu__saved-games');
+        let savedGamesList = '';
+        savedGames.forEach(game => {
+            savedGamesList += `<div>${this.generateSavedGameView(game)}</div>`;
+        });
+        console.log(savedGamesList);
+        menuSavedGames.innerHTML = `${savedGamesList}`;
+        menuSavedGames.append(this.generateGoBackButton())
+    }
+
+    generateSavedGameView(game) {
+        let savedGame = `<span>Field size: </span>${JSON.parse(game.field).length}x${JSON.parse(game.field).length}</span><br>
+                                <span>${game.field}</span><br>
+                                <span>Time: </span><span>${game.time}</span><br>
+                                <span>Moves: </span><span>${game.moves}</span><br>
+                                <button class="menu__button-load" id="${game.id}">Load game</button>`;
+        return savedGame;
     }
 
     generateWinView() {
         let win = document.createElement('div');
         win.classList.add('menu__win', 'menu_hidden');
-        win.innerHTML = `<div>Hurray! You solved the puzzle for<br><span class="win__time"></span> and <span class="win__moves"></span> moves</div>`;
         return win;
     }
 
-    renderMenuToDom() {
-        let menu = this.generateMenuView();
-        menu.append(this.generateSaveGamesView());
-        menu.append(this.generateWinView());
-        this.gameField.append(menu);
+    updateWinView(winTime='', winMoves='') {
+        const win = document.querySelector('.menu__win');
+        win.innerHTML = `<div>Hurray! You solved the puzzle for<br><span>${winTime}</span> and <span>${winMoves}</span> moves</div>`;
+        win.append(this.generateGoBackButton());
+    }
+
+    renderMenuToDom(menuList, menuSavedGames, win) {
+        const gameField = document.querySelector('.game-field');
+        const menu = this.generateMenuView();
+
+        menu.append(menuList);
+        menu.append(menuSavedGames);
+        menu.append(win);
+
+        gameField.append(menu);
     }
 }

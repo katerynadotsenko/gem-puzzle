@@ -16,8 +16,8 @@ export default class GameFieldView {
 
         document.body.insertBefore(this.generateGameField(), document.body.childNodes[1]);
         
-        const menuView = new MenuView(this.gameField);
-        menuView.init();
+        //const menuView = new MenuView(this.gameField);
+        //menuView.init();
     }
 
     generateGameField() {
