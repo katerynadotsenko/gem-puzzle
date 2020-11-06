@@ -114,7 +114,7 @@ export default class MenuView {
         settings.innerHTML = `<label for="field-size">Choose field size:</label>
                                 <select name="field-size" id="field-size">
                                     <option value="3">3х3</option>
-                                    <option value="4">4х4</option>
+                                    <option selected="selected" value="4">4х4</option>
                                     <option value="5">5х5</option>
                                     <option value="6">6х6</option>
                                     <option value="7">7х7</option>

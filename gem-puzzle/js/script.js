@@ -11,20 +11,24 @@ window.onload = () => {
     let savedGames = data.getSavedGames();
     
     let gameFieldRowQuantity = 4,
-        tilesSize = 100,
+        fieldSizePX = 400,
+        tilesSize = fieldSizePX/gameFieldRowQuantity,
+        //isImage = true,
         isWin = false;
 
-    const gameFieldView = new GameFieldView();
-    gameFieldView.init(gameFieldRowQuantity, tilesSize);
+    let winCombination = generateWinCombination();
 
-    const tiles = new Tiles(tilesSize, () => {
+    const gameFieldView = new GameFieldView();
+    gameFieldView.init(fieldSizePX);
+
+    const tiles = new Tiles(() => {
         infoField.updateMovesField(infoField.moves++);
     }, () => {
         checkIsWin();
     });
 
 
-    tiles.init(gameFieldRowQuantity);
+    tiles.init(gameFieldRowQuantity, tilesSize);
 
 
     bindTileListeners();
@@ -40,7 +44,7 @@ window.onload = () => {
             loadSavedGame(savedGame);
         },
         (fieldSize) => {
-            changeFieldSize(fieldSize);
+            changeTilesQuantity(fieldSize); ///TODO
         }
     );
 
@@ -58,16 +62,29 @@ window.onload = () => {
     }
 
 
-    function changeFieldSize(fieldSize) {
+    function changeTilesQuantity(fieldSize) {
         gameFieldRowQuantity = Number(fieldSize);
-        gameFieldView.changeFieldSize(gameFieldRowQuantity, tilesSize);
+        tilesSize = fieldSizePX / gameFieldRowQuantity;
+        winCombination = generateWinCombination();
+        //gameFieldView.changeFieldSize(fieldSize);
         console.log("gameFieldRowQuantity changed - ", gameFieldRowQuantity);
+    }
+
+    function generateWinCombination() {
+        let winCombination = '';
+        for (let i = 1; i <= gameFieldRowQuantity*gameFieldRowQuantity - 1; i++) {
+            winCombination += i
+        }
+        winCombination += '0';
+        return winCombination;
     }
 
     //TODO check is win for lager fields
     function checkIsWin() {
-        isWin = '1234567891011121314150' === tiles.tilesArr.map(arr => arr.join('')).join('');
+        
+        isWin = winCombination === tiles.tilesArr.map(arr => arr.join('')).join('');
         console.log(tiles.tilesArr.map(arr => arr.join('')).join(''));
+        console.log("winCombination - ", winCombination);
         console.log("isWin - ", isWin);
         if (isWin) {
             const winTime = document.querySelector('.info__time').lastElementChild.textContent;
@@ -89,7 +106,8 @@ window.onload = () => {
         infoField.updateMovesField(0);
         infoField.toggleMenu(infoMenu);
         gameFieldView.clearGameField();
-        tiles.init(gameFieldRowQuantity);
+        console.log("tilesSize - ", tilesSize);
+        tiles.init(gameFieldRowQuantity, tilesSize);
         bindTileListeners();
         console.log('new-game');
     }
@@ -103,7 +121,7 @@ window.onload = () => {
         gameFieldView.clearGameField();
         tiles.tilesArr = JSON.parse(savedGame.field);
         console.log('loadSavedGame - ', tiles.tilesArr);
-        changeFieldSize(tiles.tilesArr.length);
+        //changeFieldSize(tiles.tilesArr.length);
         tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr);
         bindTileListeners();
     }
@@ -115,6 +133,7 @@ window.onload = () => {
             tiles.bindTileListeners(tile);
         });
     }
-     
+
+
 }
 

@@ -6,30 +6,28 @@ export default class GameFieldView {
         this.gameField = '';
     }
 
-    init(gameFieldRowQuantity, tilesSize) {
-        const gameFieldSize = tilesSize * gameFieldRowQuantity;
+    init(fieldSize) {
 
-        const infoFieldView = new InfoFieldView(gameFieldSize);
+        const infoFieldView = new InfoFieldView(fieldSize);
         infoFieldView.init();
 
-        document.body.insertBefore(this.generateGameField(gameFieldSize), document.body.childNodes[1]);
+        document.body.insertBefore(this.generateGameField(fieldSize), document.body.childNodes[1]);
         
     }
 
-    generateGameField(gameFieldSize) {
+    generateGameField(fieldSize) {
         this.gameField = document.createElement('div');
         this.gameField.classList.add('game-field');
-        this.gameField.style.width = `${gameFieldSize}px`;
-        this.gameField.style.height = `${gameFieldSize}px`;
+        this.gameField.style.width = `${fieldSize}px`;
+        this.gameField.style.height = `${fieldSize}px`;
 
         return this.gameField;
     }
 
-    changeFieldSize(gameFieldRowQuantity, tilesSize) {
-        const gameFieldSize = tilesSize * gameFieldRowQuantity;
-        this.gameField.style.width = `${gameFieldSize}px`;
-        this.gameField.style.height = `${gameFieldSize}px`;
-    }
+    /*changeFieldSize(fieldSize) {
+        this.gameField.style.width = `${fieldSize}px`;
+        this.gameField.style.height = `${fieldSize}px`;
+    }*/
 
     clearGameField() {
         this.gameField.querySelectorAll('[data-key]').forEach(item => {

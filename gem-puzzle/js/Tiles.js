@@ -3,9 +3,9 @@ import TileView from './TileView.js';
 
 export default class Tiles {
 
-    constructor(tilesSize, updateMovesFieldFunc, checkIsWinFunc) {
+    constructor(updateMovesFieldFunc, checkIsWinFunc) {
 
-        this.tilesSize = tilesSize;
+        this.tilesSize = null;
         this.updateMovesField = updateMovesFieldFunc;
         this.checkIsWin = checkIsWinFunc;
         this.tilesArr = [];
@@ -14,14 +14,15 @@ export default class Tiles {
         this.tileView = new TileView();
     }
 
-    init(gameFieldRowQuantity) {
-
+    init(gameFieldRowQuantity, tilesSize) {
+        this.tilesSize = tilesSize;
         this.tilesArr = [];
 
         this.generateTilesArr(gameFieldRowQuantity);
         console.log("tiles init - ", this.tilesArr);
         this.shuffleTilesArr(gameFieldRowQuantity);
         this.loadTiles(gameFieldRowQuantity, this.tilesArr);
+        this.generateImageToTiles(gameFieldRowQuantity);
 
         return this.tilesArr;
 
@@ -30,6 +31,53 @@ export default class Tiles {
     loadTiles(gameFieldRowQuantity, tilesArr) {
         console.log(tilesArr);
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, this.tilesSize);
+    }
+
+    generateImageToTiles(gameFieldRowQuantity) {
+        let canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d'),
+            parts = [],
+            img = new Image();
+
+        img.onload = split;
+
+        img.src = '../images/10.jpg';
+
+        function split() {
+            let w2 = img.width / gameFieldRowQuantity,
+                h2 = img.height / gameFieldRowQuantity;
+    
+            for (let i = 0; i < gameFieldRowQuantity*gameFieldRowQuantity; i++) {
+                let x = (-w2*i) % (w2*gameFieldRowQuantity),
+                    y = -h2 * Math.floor(i/gameFieldRowQuantity);
+
+                canvas.width = w2;
+                canvas.height = h2;
+        
+                ctx.drawImage(this, x, y, w2*gameFieldRowQuantity, h2*gameFieldRowQuantity);
+        
+                parts.push(canvas.toDataURL());
+            }
+
+            /*for (let i = 0; i < gameFieldRowQuantity; i++) {
+                for (let j = 0; j < gameFieldRowQuantity ; j++) {
+                    newParts.push(parts[i + j * gameFieldRowQuantity]);
+                }
+            }*/
+            
+                
+            let tiles = document.querySelectorAll('.tile');
+            let tileNumber = 0;
+            tiles.forEach((tile) => {
+                tileNumber = Number(tile.dataset.key) - 1;
+                if (tileNumber >= 0) {
+                    tile.style.backgroundColor = 'transparent';
+                    tile.style.backgroundImage = `url(${parts[tileNumber]})`;
+                    tile.style.backgroundSize = 'cover';
+                }
+                
+            });
+        } 
     }
 
 
@@ -62,10 +110,6 @@ export default class Tiles {
         tile.addEventListener('dragstart', handleDragStart, false);*/
 
         
-
-      
-        
-          
 
         tile.onmousedown = (e) => {
             if (e.which != 1) return;
@@ -363,4 +407,50 @@ export default class Tiles {
 
         return sum % 2 === 0
     }
+}
+
+function split() {
+    let w2 = img.width / 4,
+        h2 = img.height / 4;
+
+    for(let i = 0; i < 16; i++) {
+      let x = (-w2*i) % (w2*4),
+          y = -h2 * Math.floor(i/4);
+          console.log('i - ', i);
+          console.log('x - ', x);
+          console.log('y - ', y);
+
+      canvas.width = w2;
+      canvas.height = h2;
+
+      ctx.drawImage(this, x, y, w2*4, h2*4);
+
+      parts.push(canvas.toDataURL());
+      
+
+      // for test div
+      //let slicedImage = document.createElement('img')
+      //slicedImage.src = parts[i];
+      //document.body.appendChild( slicedImage );
+    }
+
+    for (let i = 0; i < 4; i++) {
+        newParts.push(parts[i]);
+        newParts.push(parts[i+4]);
+        newParts.push(parts[i+8]);
+        newParts.push(parts[i+12]);
+  }
+    
+    
+  let tiles = document.querySelectorAll('.tile');
+  tiles.forEach((tile, i) => {
+    console.log( tile );
+    //console.log( parts[i] );
+    tile.style.backgroundColor = 'transparent';
+    tile.style.backgroundImage = `url(${newParts[i]})`;
+    tile.style.backgroundSize = 'cover';
+  });
+
+ //console.log(parts);
+
 }

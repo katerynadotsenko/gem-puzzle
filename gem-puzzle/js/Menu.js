@@ -5,12 +5,12 @@ export default class Menu {
 
     MenuView;
 
-    constructor(saveGameCallback, startNewGame, loadSavedGame, changeFieldSize) {
+    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
         this.loadSavedGame = loadSavedGame;
-        this.changeFieldSize = changeFieldSize;
+        this.changeTilesQuantity = changeTilesQuantity;
         this.menuView = new MenuView();
     }
 
@@ -85,7 +85,7 @@ export default class Menu {
         const win = this.menuView.generateWinView();
         const menuSettings = this.menuView.generateSettingsView();
         menuSettings.children[1].addEventListener('change', (e) => {
-            this.changeFieldSize(e.target.value);
+            this.changeTilesQuantity(e.target.value);
             this.startNewGame();
         })
 
