@@ -14,23 +14,38 @@ export default class Tiles {
         this.tileView = new TileView();
     }
 
-    init(gameFieldRowQuantity, tilesSize) {
+    init(gameFieldRowQuantity, tilesSize, isImage) {
         this.tilesSize = tilesSize;
         this.tilesArr = [];
 
         this.generateTilesArr(gameFieldRowQuantity);
         console.log("tiles init - ", this.tilesArr);
         this.shuffleTilesArr(gameFieldRowQuantity);
-        this.loadTiles(gameFieldRowQuantity, this.tilesArr);
-        this.generateImageToTiles(gameFieldRowQuantity);
+        this.loadTiles(gameFieldRowQuantity, this.tilesArr, tilesSize);
+        if (isImage) {
+            this.generateImageToTiles(gameFieldRowQuantity);
+        }
 
         return this.tilesArr;
 
     }
 
-    loadTiles(gameFieldRowQuantity, tilesArr) {
+    loadTiles(gameFieldRowQuantity, tilesArr, tilesSize) {
         console.log(tilesArr);
-        this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, this.tilesSize);
+        this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
+    }
+
+    clearTilesFromImage() {
+        const tiles = document.querySelectorAll('.tile');
+        let tileNumber = 0;
+        tiles.forEach((tile) => {
+            tileNumber = Number(tile.dataset.key);
+            if (tileNumber > 0) {
+                tile.style.backgroundColor = 'rgb(109, 128, 168)';
+                tile.style.backgroundImage = 'none';
+                tile.style.backgroundSize = 'none';
+            }
+        });
     }
 
     generateImageToTiles(gameFieldRowQuantity) {
@@ -66,7 +81,7 @@ export default class Tiles {
             }*/
             
                 
-            let tiles = document.querySelectorAll('.tile');
+            const tiles = document.querySelectorAll('.tile');
             let tileNumber = 0;
             tiles.forEach((tile) => {
                 tileNumber = Number(tile.dataset.key) - 1;
@@ -213,6 +228,14 @@ export default class Tiles {
     
             return;
         }
+
+
+        const sound = document.querySelector(`audio[data-sound="main`);
+        sound.currentTime = 0;
+        sound.play();
+        /*if (sound) {
+        }*/
+
     
         //change positions
     

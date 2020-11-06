@@ -5,10 +5,12 @@ export default class Menu {
 
     MenuView;
 
-    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity) {
+    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
+        this.toggleTilesImageBg =toggleTilesImageBg;
+        this.toggleMenu = toggleMenu;
         this.loadSavedGame = loadSavedGame;
         this.changeTilesQuantity = changeTilesQuantity;
         this.menuView = new MenuView();
@@ -45,6 +47,7 @@ export default class Menu {
             if (activeItem < 0) {
                 activeItem++;
                 savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+                this.soundTick();
             }
         });
 
@@ -52,6 +55,7 @@ export default class Menu {
             if (activeItem > -(itemsQuantity - 1)) {
                 activeItem--;
                 savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+                this.soundTick();
             }
         });
         
@@ -61,6 +65,7 @@ export default class Menu {
             button.addEventListener('click', () => {
                 for (let i = 0; i < savedGames.length; i++) {
                     if (savedGames[i].id == button.id) {
+                        this.soundStartGame();
                         this.loadSavedGame(savedGames[i]);
                     }
                 }
@@ -84,10 +89,15 @@ export default class Menu {
         const menuSavedGames = this.menuView.generateSavedGamesView();
         const win = this.menuView.generateWinView();
         const menuSettings = this.menuView.generateSettingsView();
-        menuSettings.children[1].addEventListener('change', (e) => {
+
+        menuSettings.children[0].children[1].addEventListener('change', (e) => {
             this.changeTilesQuantity(e.target.value);
             this.startNewGame();
-        })
+        });
+
+        menuSettings.children[1].children[1].addEventListener('change', (e) => {
+            this.toggleTilesImageBg(e.target.value === 'yes' ? true : false);
+        });
 
         this.menuView.renderMenuToDom(menuList, menuSavedGames, win, menuSettings);
     }
@@ -96,20 +106,38 @@ export default class Menu {
         this.menuView.changeActiveMenu('.menu__settings');
     }
 
+
+    soundTick() {
+        const sound = document.querySelector(`audio[data-sound="tick`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
+    soundStartGame() {
+        const sound = document.querySelector(`audio[data-sound="start-game`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
     bindMenuItemListeners(item) {
         item.addEventListener('click', () => {
             switch (item.id) {
                 case 'save':
+                    this.soundTick();
                     this.saveGameCallback();
                     console.log('save');
                 break;
                 case 'new-game':
+                    this.soundStartGame();
                     this.startNewGame();
+                    this.toggleMenu();
                 break;
                 case 'saved-games':
+                    this.soundTick();
                     this.showSavedGames();
                 break;
                 case 'settings':
+                    this.soundTick();
                     this.showSettings();
                 break;
                 default:

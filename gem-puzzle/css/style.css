@@ -99,6 +99,11 @@ html {
 }
 
 .menu__settings {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    justify-content: space-around;
+    align-items: center;
     color: #fff;
     font-size: 2rem;
     text-align: center;

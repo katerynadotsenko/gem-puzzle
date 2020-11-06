@@ -13,7 +13,7 @@ window.onload = () => {
     let gameFieldRowQuantity = 4,
         fieldSizePX = 400,
         tilesSize = fieldSizePX/gameFieldRowQuantity,
-        //isImage = true,
+        isImage = false,
         isWin = false;
 
     let winCombination = generateWinCombination();
@@ -28,7 +28,7 @@ window.onload = () => {
     });
 
 
-    tiles.init(gameFieldRowQuantity, tilesSize);
+    tiles.init(gameFieldRowQuantity, tilesSize, isImage);
 
 
     bindTileListeners();
@@ -45,6 +45,12 @@ window.onload = () => {
         },
         (fieldSize) => {
             changeTilesQuantity(fieldSize); ///TODO
+        },
+        (isImg) => {
+            toggleTilesImageBg(isImg);
+        },
+        () => {
+            toggleMenu();
         }
     );
 
@@ -59,6 +65,16 @@ window.onload = () => {
     if (savedGames.length) {
         infoField.toggleMenu(infoMenu);
         menu.showSavedGames();
+    }
+
+    function toggleTilesImageBg(isImg) {
+        isImage = isImg;
+        console.log("isImage - ", isImage);
+        if (isImage) {
+            tiles.generateImageToTiles(gameFieldRowQuantity);
+        } else {
+            tiles.clearTilesFromImage();
+        }
     }
 
 
@@ -101,18 +117,22 @@ window.onload = () => {
 
 
     function startNewGame() {
+        tilesSize = fieldSizePX/gameFieldRowQuantity;
         infoField.stopTimer();
         infoField.moves = 1;
         infoField.updateMovesField(0);
-        infoField.toggleMenu(infoMenu);
         gameFieldView.clearGameField();
         console.log("tilesSize - ", tilesSize);
-        tiles.init(gameFieldRowQuantity, tilesSize);
+        tiles.init(gameFieldRowQuantity, tilesSize, isImage);
         bindTileListeners();
         console.log('new-game');
     }
 
-    
+    function toggleMenu() {
+        infoField.toggleMenu(infoMenu);
+    }
+
+    //change field size in settings
     function loadSavedGame(savedGame) {
         infoField.stopTimer(Number(savedGame.time));
         infoField.moves = savedGame.moves+1;
@@ -120,9 +140,11 @@ window.onload = () => {
         infoField.toggleMenu(infoMenu);
         gameFieldView.clearGameField();
         tiles.tilesArr = JSON.parse(savedGame.field);
+        gameFieldRowQuantity = tiles.tilesArr.length;
+        tilesSize = fieldSizePX/gameFieldRowQuantity;
         console.log('loadSavedGame - ', tiles.tilesArr);
         //changeFieldSize(tiles.tilesArr.length);
-        tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr);
+        tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr, tilesSize);
         bindTileListeners();
     }
 

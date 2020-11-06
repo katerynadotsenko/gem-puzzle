@@ -26,6 +26,9 @@ export default class MenuView {
         goBackButton.innerText = 'go back';
 
         goBackButton.addEventListener('click', () => {
+            const sound = document.querySelector(`audio[data-sound="tick`);
+            sound.currentTime = 0;
+            sound.play();
             this.changeActiveMenu('.menu__list');
         });
 
@@ -111,15 +114,25 @@ export default class MenuView {
     generateSettingsView() {
         let settings = document.createElement('div');
         settings.classList.add('menu__settings', 'menu_hidden');
-        settings.innerHTML = `<label for="field-size">Choose field size:</label>
-                                <select name="field-size" id="field-size">
-                                    <option value="3">3х3</option>
-                                    <option selected="selected" value="4">4х4</option>
-                                    <option value="5">5х5</option>
-                                    <option value="6">6х6</option>
-                                    <option value="7">7х7</option>
-                                    <option value="8">8х8</option>
-                                </select><br>`;
+        
+        settings.innerHTML = `<div class="settings__size">
+                                <label for="field-size">Choose the field size:</label>
+                                    <select name="field-size" id="field-size">
+                                        <option value="3">3х3</option>
+                                        <option selected="selected" value="4">4х4</option>
+                                        <option value="5">5х5</option>
+                                        <option value="6">6х6</option>
+                                        <option value="7">7х7</option>
+                                        <option value="8">8х8</option>
+                                    </select>
+                                </div>
+                                <div class="settings__mode">
+                                    <label for="mode">Set the game mode:</label>
+                                    <select name="mode" id="mode">
+                                        <option selected="selected" value="no">numbers</option>
+                                        <option value="yes">image</option>
+                                    </select>
+                                </div>`;
         settings.append(this.generateGoBackButton());
 
         return settings;
