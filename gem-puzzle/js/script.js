@@ -64,7 +64,7 @@ window.onload = () => {
         console.log("gameFieldRowQuantity changed - ", gameFieldRowQuantity);
     }
 
-
+    //TODO check is win for lager fields
     function checkIsWin() {
         isWin = '1234567891011121314150' === tiles.tilesArr.map(arr => arr.join('')).join('');
         console.log(tiles.tilesArr.map(arr => arr.join('')).join(''));
@@ -96,8 +96,7 @@ window.onload = () => {
 
     
     function loadSavedGame(savedGame) {
-        //TODO
-        //infoField.stopTimer();
+        infoField.stopTimer(Number(savedGame.time));
         infoField.moves = savedGame.moves+1;
         infoField.updateMovesField(savedGame.moves);
         infoField.toggleMenu(infoMenu);

@@ -232,6 +232,7 @@ export default class Tiles {
     shuffleTilesArr(gameFieldRowQuantity) {
         
         const shuffleSteps = gameFieldRowQuantity ** 2 * 70;
+    
         console.log("shuffleSteps - ", shuffleSteps);
         let emptyPosition = {};
         let prevStep = null;
@@ -309,8 +310,57 @@ export default class Tiles {
             prevPrevStep = prevStep;
             prevStep = moveDirection;
         }
+        
+        
         console.log("this.tilesArr - ", this.tilesArr);
         console.log("this.moveHistory - ", this.moveHistory);
 
+        //console.log('isHasSolution - ', this.isHasSolution());
+
+    }
+
+    isHasSolution() {
+        //it works correctly for the standard size
+        let sum = 0;
+        let array = [];
+        this.tilesArr.forEach(arr => {
+            array.push(...arr);
+        });
+
+        let fieldSize = this.tilesArr.length;
+        console.log("fieldSize - ", fieldSize);
+        console.log("array - ", array);
+
+
+        //false
+        //array = [1,2,3,4,5,6,7,8,9,10,11,12,13,15,14,0];
+
+        //?
+        //array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 0, 29, 30, 31, 32, 35, 41, 36, 37, 38, 39, 33, 48, 34, 43, 44, 45, 46, 40, 47, 42];
+        //fieldSize = 7;
+        //true
+        //array = [5, 20, 28, 4, 18, 23, 7, 1, 25, 11, 22, 21, 37, 9, 8, 33, 19, 14, 39, 3, 24, 46, 13, 40, 2, 31, 0, 30, 32, 10, 16, 42, 48, 6, 38, 12, 29, 45, 15, 27, 41, 35, 44, 47, 43, 36, 34, 17, 26];
+        //fieldSize = 7;
+        
+
+        array.forEach((num, i) => {
+            console.log(array.slice(i));
+                if (num != 0) {
+                    array.slice(i).forEach((n, j) => {
+                        if (num > n && n != 0) {
+                            sum += 1;
+                        }
+                    });
+                } else {
+                    let numRowOfEmpty = Math.ceil((i + 1) / fieldSize);
+                    sum += numRowOfEmpty;
+                    console.log("numRowOfEmpty ---", numRowOfEmpty);
+                };
+                console.log("sum ---", sum);
+        });
+
+        console.log(sum);
+
+        return sum % 2 === 0
     }
 }

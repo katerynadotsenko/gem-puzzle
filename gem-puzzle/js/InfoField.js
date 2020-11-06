@@ -36,19 +36,21 @@ export default class InfoField {
 
     updateTimerField(time) {
         const timerElement = document.querySelector('.info__time').lastElementChild;
-        timerElement.innerText = time;
+        timerElement.innerText = this.createTime(time);
+    }
+
+    createTime(time) {
+        const hours = Math.trunc(time/60/60%60),
+            minutes = Math.trunc(time/60%60),
+            seconds = time%60;
+
+        return `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
+        
     }
 
     startTimer() {
-        let hours = 0,
-            minutes = 0,
-            seconds = 0;
-
         this.timer = setInterval(() => {
-            hours = Math.trunc(this.time/60/60%60);
-            minutes = Math.trunc(this.time/60%60);
-            seconds = this.time%60;
-            this.updateTimerField(`${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`);
+            this.updateTimerField(this.time);
             this.time++;
         }, 1000);
     }
@@ -57,10 +59,10 @@ export default class InfoField {
         clearInterval(this.timer);
     }
 
-    stopTimer() {
+    stopTimer(time = 1) {
         clearInterval(this.timer);
-        this.time = 1;
-        this.updateTimerField('00:00:00');
+        this.time = time;
+        this.updateTimerField(time);
     }
 
 }
