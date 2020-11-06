@@ -27,7 +27,35 @@ export default class Menu {
         const savedGames = this.getSavedGames();
         this.menuView.updateSavedGamesView(savedGames);
         this.menuView.changeActiveMenu('.menu__saved-games');
+
+
+        //Carousel
+        const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+        const carouselItem = document.querySelector('.carousel__item');
+
+        const carouselItemWidth = carouselItem.offsetWidth;
+        const itemsQuantity = savedGames.length;
+       
+        let activeItem = 0;
+
+        const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
+        const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
+
+        leftArrowButton.addEventListener('click', () => {
+            if (activeItem < 0) {
+                activeItem++;
+                savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+            }
+        });
+
+        rightArrowButton.addEventListener('click', () => {
+            if (activeItem > -(itemsQuantity - 1)) {
+                activeItem--;
+                savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+            }
+        });
         
+        //Go back button
         const menuButtonsLoad = document.querySelectorAll('.menu__button-load');
         menuButtonsLoad.forEach(button => {
             button.addEventListener('click', () => {
@@ -39,6 +67,8 @@ export default class Menu {
             });
         });
     };
+
+
 
     showWinInfo(winTime, winMoves) {
         this.menuView.updateWinView(winTime, winMoves);

@@ -59,8 +59,37 @@ html {
 }
 
 .menu__saved-games {
+    position: relative;
+    width: 100%;
+    height: 100%;
     color: #fff;
     font-size: 2rem;
+}
+
+.menu__saved-games.menu_hidden .saved-games__carousel {
+    display: none;
+}
+
+.menu__saved-games .menu__go-back-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+}
+
+.saved-games__carousel {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.carousel__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    width: 100%;
+    padding: 20px;
 }
 
 .menu__win {

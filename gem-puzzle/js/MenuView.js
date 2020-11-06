@@ -22,6 +22,7 @@ export default class MenuView {
 
     generateGoBackButton() {
         let goBackButton = document.createElement('button');
+        goBackButton.classList.add('menu__go-back-button')
         goBackButton.innerText = 'go back';
 
         goBackButton.addEventListener('click', () => {
@@ -53,18 +54,37 @@ export default class MenuView {
     generateSavedGamesView() {
         const menuSavedGames = document.createElement('div');
         menuSavedGames.classList.add('menu__saved-games', 'menu_hidden');
+
+        const savedGamesCarousel = document.createElement('div');
+        savedGamesCarousel.classList.add('saved-games__carousel');
+
+        const leftArrowButton = document.createElement('button');
+        leftArrowButton.classList.add('carousel__left-arrow-button');
+        leftArrowButton.innerText = 'prev';
+
+        const rightArrowButton = document.createElement('button');
+        rightArrowButton.classList.add('carousel__right-arrow-button');
+        rightArrowButton.innerText = 'next';
+        
+        menuSavedGames.append(savedGamesCarousel);
+        menuSavedGames.append(leftArrowButton);
+        menuSavedGames.append(rightArrowButton);
+        menuSavedGames.append(this.generateGoBackButton());
         
         return menuSavedGames;
     }
 
     updateSavedGamesView(savedGames) {
-        const menuSavedGames = document.querySelector('.menu__saved-games');
         let savedGamesList = '';
+
+        const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+        savedGamesCarousel.style.width = `${savedGames.length * 100}%`;
+        
         savedGames.forEach(game => {
-            savedGamesList += `<div>${this.generateSavedGameView(game)}</div>`;
+            savedGamesList += `<div class="carousel__item">${this.generateSavedGameView(game)}</div>`;
         });
-        menuSavedGames.innerHTML = `${savedGamesList}`;
-        menuSavedGames.append(this.generateGoBackButton());
+
+        savedGamesCarousel.innerHTML = `${savedGamesList}`;
     }
 
     generateSavedGameView(game) {
