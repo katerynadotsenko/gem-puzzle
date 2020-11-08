@@ -135,6 +135,13 @@ window.onload = () => {
         sound.play();
     }
 
+    function soundWin() {
+        if (!isSound) return;
+        const sound = document.querySelector(`audio[data-sound="win`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
 
     function changeTilesQuantity(fieldSize) {
         gameFieldRowQuantity = Number(fieldSize);
@@ -165,6 +172,9 @@ window.onload = () => {
             const winMoves = document.querySelector('.info__moves').lastElementChild.textContent;
             menu.showWinInfo(winTime, winMoves);
             infoField.toggleMenu(infoMenu);
+            setTimeout(() => {
+                soundWin();
+            }, 800);
         }
 
         return isWin;

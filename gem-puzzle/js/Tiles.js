@@ -245,11 +245,15 @@ export default class Tiles {
         tiles.forEach((tile) => {
             tileNumber = Number(tile.dataset.key);
             if (tileNumber > 0) {
-                tile.style.backgroundImage = `url('../images/tile-img.jpg')`;
+                tile.style.backgroundImage = `url('../assets/tile-img.jpg')`;
                 tile.style.backgroundSize = 'none';
                 tile.style.color = 'rgba(48, 28, 12, 0.7)';
             }
         });
+    }
+
+    generateImageNumber() {
+        return Math.floor(Math.random() * 150) + 1;
     }
 
     generateImageToTiles(gameFieldRowQuantity) {
@@ -260,7 +264,8 @@ export default class Tiles {
 
         img.onload = split;
 
-        img.src = '../images/10.jpg';
+        img.src = `../assets/images/${this.generateImageNumber()}.jpg`;
+        console.log(img.src);
 
         function split() {
             let w2 = img.width / gameFieldRowQuantity,
@@ -538,7 +543,7 @@ export default class Tiles {
         if (gameFieldRowQuantity == 3) {
             shuffleSteps = 50;
         } else if (gameFieldRowQuantity == 4) {
-            shuffleSteps = 130;
+            shuffleSteps = 140;
         } else {
             shuffleSteps = gameFieldRowQuantity ** 2 * 70;
         }
