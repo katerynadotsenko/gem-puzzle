@@ -3,13 +3,11 @@ import MenuView from './MenuView.js'
 
 export default class Menu {
 
-    MenuView;
-
     constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu, autocompleteGame, toggleSound, soundTick, soundStartGame) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
-        this.toggleTilesImageBg =toggleTilesImageBg;
+        this.toggleTilesImageBg = toggleTilesImageBg;
         this.toggleMenu = toggleMenu;
         this.autocompleteGame = autocompleteGame;
         this.toggleSound = toggleSound;
@@ -64,7 +62,7 @@ export default class Menu {
                     this.soundTick();
                 }
             });
-        };
+        }
         
         //Go back button
         const menuButtonsLoad = document.querySelectorAll('.menu__button-load');
@@ -78,9 +76,7 @@ export default class Menu {
                 }
             });
         });
-    };
-
-
+    }
 
     showWinInfo(winTime, winMoves) {
         this.menuView.updateWinView(winTime, winMoves);

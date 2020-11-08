@@ -24,7 +24,7 @@ export default class Tiles {
         this.loadTiles(gameFieldRowQuantity, this.tilesArr, tilesSize);
         if (isImage) {
             this.generateImageToTiles(gameFieldRowQuantity);
-        };
+        }
 
         return this.tilesArr;
 
@@ -397,12 +397,12 @@ export default class Tiles {
                 tile.style.zIndex = 4;
             };
 
-            function enterDroppable(elem) {
+            function enterDroppable() {
                 //elem.style.background = 'pink';
                 isTileNeededToMove = true;
             }
           
-            function leaveDroppable(elem) {
+            function leaveDroppable() {
                 //elem.style.background = 'transparent';
                 isTileNeededToMove = false;
             }
@@ -557,7 +557,7 @@ export default class Tiles {
                 if (item == 0) {
                     emptyPosition.top = top;
                     emptyPosition.left = left;
-                };
+                }
             });
         });
 
@@ -668,7 +668,7 @@ export default class Tiles {
                 if (num == 0) {
                     emptyPosition.top = row;
                     emptyPosition.left = col;
-                };
+                }
             });
         });
 
@@ -748,7 +748,7 @@ export default class Tiles {
         array.forEach((num, i) => {
             console.log(array.slice(i));
                 if (num != 0) {
-                    array.slice(i).forEach((n, j) => {
+                    array.slice(i).forEach(n => {
                         if (num > n && n != 0) {
                             sum += 1;
                         }
@@ -757,7 +757,7 @@ export default class Tiles {
                     let numRowOfEmpty = Math.ceil((i + 1) / fieldSize);
                     sum += numRowOfEmpty;
                     console.log("numRowOfEmpty ---", numRowOfEmpty);
-                };
+                }
                 console.log("sum ---", sum);
         });
 

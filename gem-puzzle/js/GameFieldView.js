@@ -1,4 +1,3 @@
-import TileView from './TileView.js';
 import InfoFieldView from './InfoFieldView.js';
 
 export default class GameFieldView {
