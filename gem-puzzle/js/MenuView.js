@@ -69,10 +69,15 @@ export default class MenuView {
         const rightArrowButton = document.createElement('button');
         rightArrowButton.classList.add('carousel__right-arrow-button');
         rightArrowButton.innerText = 'next';
+
+        const notification = document.createElement('div');
+        notification.classList.add('saved-games__notification');
+        notification.innerText = 'You don\'t have any saved games yet';
         
         menuSavedGames.append(savedGamesCarousel);
         menuSavedGames.append(leftArrowButton);
         menuSavedGames.append(rightArrowButton);
+        menuSavedGames.append(notification);
         menuSavedGames.append(this.generateGoBackButton());
         
         return menuSavedGames;
@@ -84,21 +89,16 @@ export default class MenuView {
         const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
 
         if (notification) {
-            const menuSavedGames = document.querySelector('.menu__saved-games');
-            const notification = document.createElement('div');
+            const notification = document.querySelector('.saved-games__notification');
+            notification.style.display = 'block';
 
             leftArrowButton.style.display = 'none';
             rightArrowButton.style.display = 'none';
-
-            notification.classList.add('saved-games__notification');
-            notification.innerText = 'You don\'t have any saved games yet';
-            menuSavedGames.append(notification);
+  
         } else {
             const notification = document.querySelector('.saved-games__notification');
 
-            if (notification) {
-                notification.remove();
-            }
+            notification.style.display = 'none';
 
             leftArrowButton.style.display = 'inline-block';
             rightArrowButton.style.display = 'inline-block';
