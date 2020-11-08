@@ -26,8 +26,6 @@ export default class Tiles {
             this.generateImageToTiles(gameFieldRowQuantity);
         };
 
-        //this.autocompleteGame(this.tilesArr);
-
         return this.tilesArr;
 
     }
@@ -247,9 +245,9 @@ export default class Tiles {
         tiles.forEach((tile) => {
             tileNumber = Number(tile.dataset.key);
             if (tileNumber > 0) {
-                tile.style.backgroundColor = 'rgb(109, 128, 168)';
-                tile.style.backgroundImage = 'none';
+                tile.style.backgroundImage = `url('../images/tile-img.jpg')`;
                 tile.style.backgroundSize = 'none';
+                tile.style.color = 'rgba(48, 28, 12, 0.7)';
             }
         });
     }
@@ -292,6 +290,7 @@ export default class Tiles {
             tiles.forEach((tile) => {
                 tileNumber = Number(tile.dataset.key) - 1;
                 if (tileNumber >= 0) {
+                    tile.style.color = 'transparent';
                     tile.style.backgroundColor = 'transparent';
                     tile.style.backgroundImage = `url(${parts[tileNumber]})`;
                     tile.style.backgroundSize = 'cover';
@@ -394,12 +393,12 @@ export default class Tiles {
             };
 
             function enterDroppable(elem) {
-                elem.style.background = 'pink';
+                //elem.style.background = 'pink';
                 isTileNeededToMove = true;
             }
           
             function leaveDroppable(elem) {
-                elem.style.background = 'transparent';
+                //elem.style.background = 'transparent';
                 isTileNeededToMove = false;
             }
     
@@ -470,20 +469,20 @@ export default class Tiles {
         
        // 2 change positions in DOM
 
-       const gameField = document.querySelector('.game-field');
+       const gameFieldWithBorder = document.querySelector('.game-field-with-border');
 
        let tilePosX = null;
        let tilePosY = null;
        let moveAnimationTime = null;
 
        if (isAutocomplete == false) {
-            tilePosX = `${tile.offsetTop - gameField.offsetTop}px`;
-            tilePosY = `${tile.offsetLeft - gameField.offsetLeft}px`;
+            tilePosX = `${tile.offsetTop - gameFieldWithBorder.offsetTop - 30}px`;
+            tilePosY = `${tile.offsetLeft - gameFieldWithBorder.offsetLeft - 30}px`;
             moveAnimationTime = 300;
        } else {
-        tilePosX = `${tile.dataset.top * this.tilesSize}px`;
-        tilePosY = `${tile.dataset.left * this.tilesSize}px`;
-        moveAnimationTime = 100;
+            tilePosX = `${tile.dataset.top * this.tilesSize}px`;
+            tilePosY = `${tile.dataset.left * this.tilesSize}px`;
+            moveAnimationTime = 100;
        }
       
 
@@ -491,6 +490,7 @@ export default class Tiles {
         tile.style.left = `${Number(emptyArrPosLeft) * this.tilesSize}px`;
         tile.dataset.top = emptyArrPosTop;
         tile.dataset.left = emptyArrPosLeft;
+
         //TODO check bugs if use drag & drop
         tile.animate([
             { top: tilePosX,  left: tilePosY},
@@ -509,6 +509,7 @@ export default class Tiles {
         empty.style.background = 'transparent';
   
         this.updateMovesField();
+        
         this.checkIsWin();
     
     }
@@ -531,8 +532,12 @@ export default class Tiles {
     shuffleTilesArr(gameFieldRowQuantity) {
         
         let shuffleSteps;
+        this.moveHistory = [];
 
-        if (gameFieldRowQuantity <= 4) {
+
+        if (gameFieldRowQuantity == 3) {
+            shuffleSteps = 50;
+        } else if (gameFieldRowQuantity == 4) {
             shuffleSteps = 130;
         } else {
             shuffleSteps = gameFieldRowQuantity ** 2 * 70;
@@ -689,7 +694,7 @@ export default class Tiles {
                     break;
             }
 
-            //console.log(`${step} --- ${activeTileTop}-${activeTileLeft}`);
+            console.log(`${step} --- ${activeTileTop}-${activeTileLeft}`);
 
             if (step === -1) {
                 tile = document.querySelector(`[data-key="${this.tilesArr[this.tilesArr.length-1][this.tilesArr.length-1]}"]`);
@@ -698,10 +703,10 @@ export default class Tiles {
             }
 
             await new Promise(resolve => {
-                setTimeout(() => {
-                    this.moveTile(tile, true, true);
+                setTimeout(async () => {
+                    await this.moveTile(tile, true, true);
                     resolve();
-                }, 150);
+                }, 120);
             });
             
         }

@@ -162,7 +162,7 @@ export default class MenuView {
     }
 
     renderMenuToDom(menuList, menuSavedGames, win, menuSettings) {
-        const gameField = document.querySelector('.game-field');
+        const gameFieldWithBorder = document.querySelector('.game-field-with-border');
         const menu = this.generateMenuView();
 
         menu.append(menuList);
@@ -170,6 +170,6 @@ export default class MenuView {
         menu.append(win);
         menu.append(menuSettings);
 
-        gameField.append(menu);
+        gameFieldWithBorder.append(menu);
     }
 }

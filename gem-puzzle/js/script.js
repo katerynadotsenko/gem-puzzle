@@ -19,6 +19,10 @@ window.onload = () => {
 
     let winCombination = generateWinCombination();
 
+    const gameContainer = document.createElement('div');
+    gameContainer.classList.add('game-container');
+    document.body.insertBefore(gameContainer, document.body.childNodes[0]);
+
     const gameFieldView = new GameFieldView();
     gameFieldView.init(fieldSizePX);
 
@@ -100,7 +104,6 @@ window.onload = () => {
 
     function toggleSound() {
         isSound = !isSound;
-        InfoField.isSound = isSound;
         console.log("script toggle sound - ", isSound);
     }
 
@@ -163,6 +166,8 @@ window.onload = () => {
             menu.showWinInfo(winTime, winMoves);
             infoField.toggleMenu(infoMenu);
         }
+
+        return isWin;
     }
 
 

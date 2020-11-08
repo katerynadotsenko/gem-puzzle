@@ -25,6 +25,7 @@ export default class InfoFieldView {
     }
 
     renderInfoFieldToDom(){
-        document.body.insertBefore(this.generateInfoField(this.gameFieldSize), document.body.childNodes[0]);
+        const gameContainer = document.querySelector('.game-container');
+        gameContainer.insertBefore(this.generateInfoField(this.gameFieldSize), gameContainer.childNodes[0]);
     }
 }

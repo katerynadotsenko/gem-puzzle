@@ -11,7 +11,8 @@ export default class GameFieldView {
         const infoFieldView = new InfoFieldView(fieldSize);
         infoFieldView.init();
 
-        document.body.insertBefore(this.generateGameField(fieldSize), document.body.childNodes[1]);
+        const gameContainer = document.querySelector('.game-container');
+        gameContainer.insertBefore(this.generateGameField(fieldSize),gameContainer.childNodes[1]);
         
     }
 
@@ -21,7 +22,14 @@ export default class GameFieldView {
         this.gameField.style.width = `${fieldSize}px`;
         this.gameField.style.height = `${fieldSize}px`;
 
-        return this.gameField;
+        const gameFieldWithBorder = document.createElement('div');
+        gameFieldWithBorder.classList.add('game-field-with-border');
+        gameFieldWithBorder.style.width = `${fieldSize + 60}px`;
+        gameFieldWithBorder.style.height = `${fieldSize + 60}px`;
+
+        gameFieldWithBorder.append(this.gameField);
+
+        return gameFieldWithBorder;
     }
 
     /*changeFieldSize(fieldSize) {
