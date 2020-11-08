@@ -49,7 +49,8 @@ export default class MenuView {
         menuList.innerHTML = `<li id="save">Save Game</li>
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
-                                <li id="settings">Settings</li>`;
+                                <li id="settings">Settings</li>
+                                <li id="autocomplete">Autocomplete Game</li>`;
         return menuList;
     }
 
@@ -77,17 +78,40 @@ export default class MenuView {
         return menuSavedGames;
     }
 
-    updateSavedGamesView(savedGames) {
+    updateSavedGamesView(savedGames, notification=false) {
         let savedGamesList = '';
+        const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
+        const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
 
-        const savedGamesCarousel = document.querySelector('.saved-games__carousel');
-        savedGamesCarousel.style.width = `${savedGames.length * 100}%`;
-        
-        savedGames.forEach(game => {
-            savedGamesList += `<div class="carousel__item">${this.generateSavedGameView(game)}</div>`;
-        });
+        if (notification) {
+            const menuSavedGames = document.querySelector('.menu__saved-games');
+            const notification = document.createElement('div');
 
-        savedGamesCarousel.innerHTML = `${savedGamesList}`;
+            leftArrowButton.style.display = 'none';
+            rightArrowButton.style.display = 'none';
+
+            notification.classList.add('saved-games__notification');
+            notification.innerText = 'You don\'t have any saved games yet';
+            menuSavedGames.append(notification);
+        } else {
+            const notification = document.querySelector('.saved-games__notification');
+
+            if (notification) {
+                notification.remove();
+            }
+
+            leftArrowButton.style.display = 'inline-block';
+            rightArrowButton.style.display = 'inline-block';
+
+            const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            savedGamesCarousel.style.width = `${savedGames.length * 100}%`;
+            
+            savedGames.forEach(game => {
+                savedGamesList += `<div class="carousel__item">${this.generateSavedGameView(game)}</div>`;
+            });
+
+            savedGamesCarousel.innerHTML = `${savedGamesList}`;
+        }
     }
 
     generateSavedGameView(game) {

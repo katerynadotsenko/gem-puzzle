@@ -84,6 +84,12 @@ html {
     justify-content: space-between;
 }
 
+.saved-games__notification {
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+}
+
 .carousel__item {
     display: flex;
     flex-wrap: wrap;

@@ -1,7 +1,6 @@
 export default class TileView {
 
     generateTile(tilesSize, value, left, top) {
-        console.log("tilesSize - ", tilesSize);
         this.tile = document.createElement('div');
         this.tile.classList.add('tile', `${!value ? 'tile_empty' : 'tile_number'}`);
         //this.tile.draggable = true;
@@ -23,7 +22,6 @@ export default class TileView {
 
     renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize) {
         const gameField = document.querySelector('.game-field');
-        console.log("renderTilesToDom gameFieldRowQuantity - ", gameFieldRowQuantity);
         for (let i = 0; i < gameFieldRowQuantity; i++) {
             for (let j = 0; j < gameFieldRowQuantity; j++) {
                 gameField.append(this.generateTile(tilesSize, tilesArr[j][i], i, j));

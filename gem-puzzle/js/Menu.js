@@ -5,12 +5,13 @@ export default class Menu {
 
     MenuView;
 
-    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu) {
+    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu, autocompleteGame) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
         this.toggleTilesImageBg =toggleTilesImageBg;
         this.toggleMenu = toggleMenu;
+        this.autocompleteGame = autocompleteGame;
         this.loadSavedGame = loadSavedGame;
         this.changeTilesQuantity = changeTilesQuantity;
         this.menuView = new MenuView();
@@ -27,37 +28,40 @@ export default class Menu {
     showSavedGames() {
         console.log('saved-games');
         const savedGames = this.getSavedGames();
-        this.menuView.updateSavedGamesView(savedGames);
         this.menuView.changeActiveMenu('.menu__saved-games');
+        if (!savedGames.length) {
+            this.menuView.updateSavedGamesView(null, true);
+        } else {
+            this.menuView.updateSavedGamesView(savedGames);
 
+            //Carousel
+            const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            const carouselItem = document.querySelector('.carousel__item');
 
-        //Carousel
-        const savedGamesCarousel = document.querySelector('.saved-games__carousel');
-        const carouselItem = document.querySelector('.carousel__item');
+            const carouselItemWidth = carouselItem.offsetWidth;
+            const itemsQuantity = savedGames.length;
+        
+            let activeItem = 0;
 
-        const carouselItemWidth = carouselItem.offsetWidth;
-        const itemsQuantity = savedGames.length;
-       
-        let activeItem = 0;
+            const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
+            const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
 
-        const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
-        const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
+            leftArrowButton.addEventListener('click', () => {
+                if (activeItem < 0) {
+                    activeItem++;
+                    savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+                    this.soundTick();
+                }
+            });
 
-        leftArrowButton.addEventListener('click', () => {
-            if (activeItem < 0) {
-                activeItem++;
-                savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
-                this.soundTick();
-            }
-        });
-
-        rightArrowButton.addEventListener('click', () => {
-            if (activeItem > -(itemsQuantity - 1)) {
-                activeItem--;
-                savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
-                this.soundTick();
-            }
-        });
+            rightArrowButton.addEventListener('click', () => {
+                if (activeItem > -(itemsQuantity - 1)) {
+                    activeItem--;
+                    savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
+                    this.soundTick();
+                }
+            });
+        };
         
         //Go back button
         const menuButtonsLoad = document.querySelectorAll('.menu__button-load');
@@ -139,6 +143,11 @@ export default class Menu {
                 case 'settings':
                     this.soundTick();
                     this.showSettings();
+                break;
+                case 'autocomplete':
+                    this.soundTick();
+                    this.toggleMenu();
+                    this.autocompleteGame();
                 break;
                 default:
                 break;

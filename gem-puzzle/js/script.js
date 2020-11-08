@@ -51,6 +51,9 @@ window.onload = () => {
         },
         () => {
             toggleMenu();
+        },
+        () => {
+            autocompleteGame();
         }
     );
 
@@ -89,7 +92,7 @@ window.onload = () => {
     function generateWinCombination() {
         let winCombination = '';
         for (let i = 1; i <= gameFieldRowQuantity*gameFieldRowQuantity - 1; i++) {
-            winCombination += i
+            winCombination += `${i}-`;
         }
         winCombination += '0';
         return winCombination;
@@ -98,8 +101,8 @@ window.onload = () => {
     //TODO check is win for lager fields
     function checkIsWin() {
         
-        isWin = winCombination === tiles.tilesArr.map(arr => arr.join('')).join('');
-        console.log(tiles.tilesArr.map(arr => arr.join('')).join(''));
+        isWin = winCombination === tiles.tilesArr.map(arr => arr.join('-')).join('-');
+        console.log(tiles.tilesArr.map(arr => arr.join('-')).join('-'));
         console.log("winCombination - ", winCombination);
         console.log("isWin - ", isWin);
         if (isWin) {
@@ -146,6 +149,10 @@ window.onload = () => {
         //changeFieldSize(tiles.tilesArr.length);
         tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr, tilesSize);
         bindTileListeners();
+    }
+
+    function autocompleteGame() {
+        tiles.autocompleteGame(tiles.tilesArr);
     }
 
 

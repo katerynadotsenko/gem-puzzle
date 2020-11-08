@@ -19,12 +19,13 @@ export default class Tiles {
         this.tilesArr = [];
 
         this.generateTilesArr(gameFieldRowQuantity);
-        console.log("tiles init - ", this.tilesArr);
         this.shuffleTilesArr(gameFieldRowQuantity);
         this.loadTiles(gameFieldRowQuantity, this.tilesArr, tilesSize);
         if (isImage) {
             this.generateImageToTiles(gameFieldRowQuantity);
-        }
+        };
+
+        //this.autocompleteGame(this.tilesArr);
 
         return this.tilesArr;
 
@@ -34,6 +35,210 @@ export default class Tiles {
         console.log(tilesArr);
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
     }
+
+   /* async autocompleteGame(tilesArr) {
+        this.tilesArr = tilesArr;
+
+        const tilesQuantity = this.tilesArr.length ** 2 ;
+        console.log('tilesQuantity - ', tilesQuantity);
+
+        let emptyTilePos = {
+            top: null,
+            left: null
+        };
+
+        let activeTilePos = {
+            top: null,
+            left: null
+        };
+
+        
+
+        
+        this.tilesArr.forEach((rowArr, row) => {
+            rowArr.forEach((num, col) => {
+                if (num == 0) {
+                    emptyTilePos.top = row;
+                    emptyTilePos.left = col;
+                };
+            });
+        });
+
+
+        for (let i = 1; i < tilesQuantity; i++) {
+            for (let j = 0; j < this.tilesArr.length; j++) {
+                for (let k = 0; k < this.tilesArr[j].length; k++) {
+                    if (this.tilesArr[j][k] == i) {
+                        activeTilePos.top = j;
+                        activeTilePos.left = k;
+
+                        if (this.tilesArr[j][k] == 1) {
+                            await this.moveTileToItPosition(activeTilePos, emptyTilePos);
+                            console.log("next");
+                        }
+                    };
+                }
+            }
+        }
+
+    }
+
+    async moveTileToItPosition(activeTilePos, emptyTilePos) {
+        console.log("start");
+        let tileCompletePosition = {
+            top: 0,
+            left: 0
+        };
+
+        let tileToExchPos = {
+            top: null,
+            left: null
+        };
+
+
+        console.log('activeTilePos.top - ', activeTilePos.top);
+        console.log('activeTilePos.left - ', activeTilePos.left);
+            while (activeTilePos.top != tileCompletePosition.top && activeTilePos.left != tileCompletePosition.left) {
+
+                console.log('vertical movement');
+                while (emptyTilePos.top != activeTilePos.top - 1) {
+                    if (emptyTilePos.top > activeTilePos.top - 1) {
+                        if (emptyTilePos.top - 1 < 0) {
+                            break;
+                        }
+                        tileToExchPos.top = emptyTilePos.top - 1;
+                        tileToExchPos.left = emptyTilePos.left;
+                        emptyTilePos.top = emptyTilePos.top - 1;
+                    } else {
+                        tileToExchPos.top = emptyTilePos.top + 1;
+                        tileToExchPos.left = emptyTilePos.left;
+                        emptyTilePos.top = emptyTilePos.top + 1;
+                    };
+                    console.log('tileToExchPos.top - ', tileToExchPos.top);
+                    console.log('tileToExchPos.left - ', tileToExchPos.left);
+
+                    if (tileToExchPos.top == activeTilePos.top && tileToExchPos.left == activeTilePos.left) break;
+
+                    const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
+                    console.log("tile to exch - ", tile);
+                
+                    await new Promise(resolve => {
+                        setTimeout(() => {
+                            this.moveTile(tile, true, true);
+                            resolve();
+                        }, 500);
+                    });  
+                };
+            
+                console.log('activeTilePos.top - ', activeTilePos.top);
+                console.log('activeTilePos.left - ', activeTilePos.left);
+
+            console.log('horizontal movement');
+            console.log(`${activeTilePos.top}==${tileCompletePosition.top}`);
+            console.log(`${emptyTilePos.top}==${activeTilePos.top - 1}`);
+            console.log('horizontal movement');
+                if (activeTilePos.top == tileCompletePosition.top && emptyTilePos.top == activeTilePos.top - 1) {
+                    //move empty to left
+                    console.log("works!!!");
+                    while (emptyTilePos.left != tileCompletePosition.left) {
+                        if (emptyTilePos.left > tileCompletePosition.left) {
+                            tileToExchPos.top = emptyTilePos.top;
+                            tileToExchPos.left = emptyTilePos.left - 1;
+                            emptyTilePos.left = emptyTilePos.left - 1;
+                        } else {
+                            tileToExchPos.top = emptyTilePos.top;
+                            tileToExchPos.left = emptyTilePos.left + 1;
+                            emptyTilePos.left = emptyTilePos.left + 1;
+                        };
+
+                        const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
+                        console.log("tile to exch - ", tile);
+                    
+                        await new Promise(resolve => {
+                            setTimeout(() => {
+                                this.moveTile(tile, true, true);
+                                resolve();
+                            }, 500);
+                        }); 
+                    }
+                }
+
+                while (emptyTilePos.left != activeTilePos.left) {
+                    if (emptyTilePos.left > activeTilePos.left) {
+                        tileToExchPos.top = emptyTilePos.top;
+                        tileToExchPos.left = emptyTilePos.left - 1;
+                        emptyTilePos.left = emptyTilePos.left - 1;
+                    } else {
+                        tileToExchPos.top = emptyTilePos.top;
+                        tileToExchPos.left = emptyTilePos.left + 1;
+                        emptyTilePos.left = emptyTilePos.left + 1;
+                    };
+                    console.log('tileToExchPos.top - ', tileToExchPos.top);
+                    console.log('tileToExchPos.left - ', tileToExchPos.left);
+
+                    if (tileToExchPos.top == activeTilePos.top && tileToExchPos.left == activeTilePos.left) {
+                        console.log('exit');
+                        break;
+                    };
+
+                    const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
+                    console.log("tile to exch - ", tile);
+                
+                    await new Promise(resolve => {
+                        setTimeout(() => {
+                            this.moveTile(tile, true, true);
+                            resolve();
+                        }, 500);
+                    });  
+                };
+
+                if (emptyTilePos.top + 1 == activeTilePos.top && emptyTilePos.left == activeTilePos.left) {
+                    console.log("its ok");
+                } else {
+                    console.log("check");
+                };
+                console.log(`${activeTilePos.top} --- ${emptyTilePos.top + 1}`);
+
+                //move tile to top
+                if (tileCompletePosition.top < activeTilePos.top && activeTilePos.top == emptyTilePos.top + 1) {
+                    const tile = document.querySelector(`[data-key="${this.tilesArr[activeTilePos.top][activeTilePos.left]}"]`);
+                    let activeTop = activeTilePos.top;
+                    let activeLeft = activeTilePos.left;
+                    activeTilePos.top = emptyTilePos.top;
+                    activeTilePos.left = emptyTilePos.left;
+                    emptyTilePos.top = activeTop;
+                    emptyTilePos.left = activeLeft;
+                    await new Promise(resolve => {
+                        setTimeout(() => {
+                            this.moveTile(tile, true, true);
+                            resolve();
+                        }, 500);
+                    }); 
+                };
+
+                //move tile to left
+                if (tileCompletePosition.left < activeTilePos.left && activeTilePos.left == emptyTilePos.left + 1) {
+                    const tile = document.querySelector(`[data-key="${this.tilesArr[activeTilePos.top][activeTilePos.left]}"]`);
+                    let activeTop = activeTilePos.top;
+                    let activeLeft = activeTilePos.left;
+                    activeTilePos.top = emptyTilePos.top;
+                    activeTilePos.left = emptyTilePos.left;
+                    emptyTilePos.top = activeTop;
+                    emptyTilePos.left = activeLeft;
+                    await new Promise(resolve => {
+                        setTimeout(() => {
+                            this.moveTile(tile, true, true);
+                            resolve();
+                        }, 500);
+                    }); 
+                }
+
+            }
+            
+            
+    }*/
+
+
 
     clearTilesFromImage() {
         const tiles = document.querySelectorAll('.tile');
@@ -184,7 +389,6 @@ export default class Tiles {
                 document.querySelector('.game-field').append(tile);
                 tile.onmouseup = null;
                 this.moveTile(tile, isTileNeededToMove);
-                this.checkIsWin();
                 tile.style.zIndex = 4;
             };
 
@@ -205,7 +409,7 @@ export default class Tiles {
 
     }
 
-    moveTile(tile, isTileNeededToMove=true) {
+    moveTile(tile, isTileNeededToMove=true, isAutocomplete=false) {
 
         const empty = document.querySelector('[data-key="0"]');
     
@@ -229,7 +433,6 @@ export default class Tiles {
             return;
         }
 
-
         const sound = document.querySelector(`audio[data-sound="main`);
         sound.currentTime = 0;
         sound.play();
@@ -243,6 +446,24 @@ export default class Tiles {
         const tileArrPosLeft = tile.dataset.left;
         const emptyArrPosTop = empty.dataset.top;
         const emptyArrPosLeft = empty.dataset.left;
+
+        let moveDirection = null;
+
+        if (isAutocomplete == false) {
+
+        //move direction: 1 - top, 2 - right, 3 - bottom, 4 - left
+        if (tileArrPosTop - emptyArrPosTop > 0) {
+            moveDirection = 3;
+        } else if (tileArrPosTop - emptyArrPosTop < 0) {
+            moveDirection = 1;
+        } else if (tileArrPosLeft - emptyArrPosLeft > 0) {
+            moveDirection = 2;
+        } else if (tileArrPosLeft - emptyArrPosLeft < 0) {
+            moveDirection = 4;
+        }
+
+            this.moveHistory.push(moveDirection);
+        }
     
         // 1 change positions in array
     
@@ -253,8 +474,21 @@ export default class Tiles {
        // 2 change positions in DOM
 
        const gameField = document.querySelector('.game-field');
-       const tilePosX = `${tile.offsetTop - gameField.offsetTop}px`;
-       const tilePosY = `${tile.offsetLeft - gameField.offsetLeft}px`;
+
+       let tilePosX = null;
+       let tilePosY = null;
+       let moveAnimationTime = null;
+
+       if (isAutocomplete == false) {
+            tilePosX = `${tile.offsetTop - gameField.offsetTop}px`;
+            tilePosY = `${tile.offsetLeft - gameField.offsetLeft}px`;
+            moveAnimationTime = 300;
+       } else {
+        tilePosX = `${tile.dataset.top * this.tilesSize}px`;
+        tilePosY = `${tile.dataset.left * this.tilesSize}px`;
+        moveAnimationTime = 100;
+       }
+      
 
         tile.style.top = `${Number(emptyArrPosTop) * this.tilesSize}px`;
         tile.style.left = `${Number(emptyArrPosLeft) * this.tilesSize}px`;
@@ -266,7 +500,7 @@ export default class Tiles {
             { top: `${Number(emptyArrPosTop) * this.tilesSize}px`,  left: `${Number(emptyArrPosLeft) * this.tilesSize}px`}
             
           ], {
-            duration: 300,
+            duration: moveAnimationTime,
             animationFillMode: 'forward'
           });
         
@@ -278,6 +512,7 @@ export default class Tiles {
         empty.style.background = 'transparent';
   
         this.updateMovesField();
+        this.checkIsWin();
     
     }
 
@@ -298,12 +533,17 @@ export default class Tiles {
     
     shuffleTilesArr(gameFieldRowQuantity) {
         
-        const shuffleSteps = gameFieldRowQuantity ** 2 * 70;
+        let shuffleSteps;
+
+        if (gameFieldRowQuantity <= 4) {
+            shuffleSteps = 130;
+        } else {
+            shuffleSteps = gameFieldRowQuantity ** 2 * 70;
+        }
     
         console.log("shuffleSteps - ", shuffleSteps);
         let emptyPosition = {};
         let prevStep = null;
-        let prevPrevStep = null;
 
        this.tilesArr.forEach((array, top) => {
             array.forEach((item, left) => {
@@ -313,7 +553,6 @@ export default class Tiles {
                 };
             });
         });
-        console.log("emptyPosition - ", emptyPosition);
 
         let moveDirection = 1;
     
@@ -323,15 +562,30 @@ export default class Tiles {
             moveDirection = Math.floor(Math.random() * 4) + 1;
             
             //check direction to prevent repeated steps
-            if (prevPrevStep === moveDirection) {
-                if (prevStep%2 && prevPrevStep%2) {
-                    moveDirection = 1;
-                } else if (!prevStep%2 && !prevPrevStep%2) {
-                    moveDirection = 2;
+            
+            if ((prevStep == 1 && moveDirection == 3) || (prevStep == 3 && moveDirection == 1)) {
+                moveDirection = emptyPosition.left < 1 ? 4 : 2;
+            } else if ((prevStep == 2 && moveDirection == 4) || (prevStep == 4 && moveDirection == 2)) {
+                moveDirection = emptyPosition.top < 1 ? 3 : 1;
+            }
+
+            if (prevStep == moveDirection) {
+                switch (moveDirection) {
+                    case 1:
+                        moveDirection = emptyPosition.top < 1 ? 2 : 1;
+                        break;
+                    case 2:
+                        moveDirection = emptyPosition.left >= gameFieldRowQuantity - 1 ? 1 : 2;
+                        break;
+                    case 3:
+                        moveDirection = emptyPosition.top >= gameFieldRowQuantity - 1 ? 2: 3;
+                        break;
+                    case 4:
+                        moveDirection = emptyPosition.left < 1 ? 1 : 4;
+                        break;
                 }
             }
 
-    
             //check possibility to move
             switch (moveDirection) {
                 case 1:
@@ -374,7 +628,7 @@ export default class Tiles {
             }
     
             this.moveHistory.push(moveDirection);
-            prevPrevStep = prevStep;
+            
             prevStep = moveDirection;
         }
         
@@ -384,6 +638,80 @@ export default class Tiles {
 
         //console.log('isHasSolution - ', this.isHasSolution());
 
+    }
+
+    async autocompleteGame(tilesArr) {
+        // move direction: 1 - top, 2 - right, 3 - bottom, 4 - left
+        this.tilesArr = tilesArr;
+
+        let emptyPosition = {
+            top: null,
+            left: null
+        };
+
+        let moveDirection;
+
+        let tile;
+
+        let activeTileTop;
+        let activeTileLeft;
+
+        this.tilesArr.forEach((rowArr, row) => {
+            rowArr.forEach((num, col) => {
+                if (num == 0) {
+                    emptyPosition.top = row;
+                    emptyPosition.left = col;
+                };
+            });
+        });
+
+//this.moveHistory.length - 1
+        for (let step = this.moveHistory.length-1; step >= -1; step--) {
+            
+            moveDirection = this.moveHistory[step];
+
+            activeTileTop = emptyPosition.top;
+            activeTileLeft = emptyPosition.left;
+
+
+            switch (moveDirection) {
+                case 1:
+                    emptyPosition.top = emptyPosition.top + 1;
+                    break;
+                case 2:
+                    
+                    emptyPosition.left = emptyPosition.left - 1;
+                    break;
+                case 3:
+                    
+                    emptyPosition.top = emptyPosition.top - 1;
+                    break;
+                case 4:
+                   
+                    emptyPosition.left = emptyPosition.left + 1;
+                    break;
+            }
+
+            //console.log(`${step} --- ${activeTileTop}-${activeTileLeft}`);
+
+            if (step === -1) {
+                tile = document.querySelector(`[data-key="${this.tilesArr[this.tilesArr.length-1][this.tilesArr.length-1]}"]`);
+            } else {
+                tile = document.querySelector(`[data-key="${this.tilesArr[activeTileTop][activeTileLeft]}"]`);
+            }
+
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    this.moveTile(tile, true, true);
+                    resolve();
+                }, 150);
+            });
+            
+        }
+
+        console.log("autocomplete -> ", this.tilesArr);
+
+        
     }
 
     isHasSolution() {
@@ -432,48 +760,3 @@ export default class Tiles {
     }
 }
 
-function split() {
-    let w2 = img.width / 4,
-        h2 = img.height / 4;
-
-    for(let i = 0; i < 16; i++) {
-      let x = (-w2*i) % (w2*4),
-          y = -h2 * Math.floor(i/4);
-          console.log('i - ', i);
-          console.log('x - ', x);
-          console.log('y - ', y);
-
-      canvas.width = w2;
-      canvas.height = h2;
-
-      ctx.drawImage(this, x, y, w2*4, h2*4);
-
-      parts.push(canvas.toDataURL());
-      
-
-      // for test div
-      //let slicedImage = document.createElement('img')
-      //slicedImage.src = parts[i];
-      //document.body.appendChild( slicedImage );
-    }
-
-    for (let i = 0; i < 4; i++) {
-        newParts.push(parts[i]);
-        newParts.push(parts[i+4]);
-        newParts.push(parts[i+8]);
-        newParts.push(parts[i+12]);
-  }
-    
-    
-  let tiles = document.querySelectorAll('.tile');
-  tiles.forEach((tile, i) => {
-    console.log( tile );
-    //console.log( parts[i] );
-    tile.style.backgroundColor = 'transparent';
-    tile.style.backgroundImage = `url(${newParts[i]})`;
-    tile.style.backgroundSize = 'cover';
-  });
-
- //console.log(parts);
-
-}
