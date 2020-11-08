@@ -3,11 +3,12 @@ import TileView from './TileView.js';
 
 export default class Tiles {
 
-    constructor(updateMovesFieldFunc, checkIsWinFunc) {
+    constructor(updateMovesFieldFunc, checkIsWinFunc, soundMoveTile) {
 
         this.tilesSize = null;
         this.updateMovesField = updateMovesFieldFunc;
         this.checkIsWin = checkIsWinFunc;
+        this.soundMoveTile = soundMoveTile;
         this.tilesArr = [];
         this.moveHistory = [];
         this.infoField = null;
@@ -433,11 +434,7 @@ export default class Tiles {
             return;
         }
 
-        const sound = document.querySelector(`audio[data-sound="main`);
-        sound.currentTime = 0;
-        sound.play();
-        /*if (sound) {
-        }*/
+        this.soundMoveTile();
 
     
         //change positions

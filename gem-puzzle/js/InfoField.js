@@ -1,5 +1,6 @@
 export default class InfoField {
-    constructor() {
+    constructor(soundMenu) {
+        this.soundMenu = soundMenu;
         this.time = 1;
         this.timer = null;
         this.moves = 1;
@@ -12,6 +13,7 @@ export default class InfoField {
         const infoMenu = document.querySelector('.info__menu-button');
         infoMenu.addEventListener('click', (e) => {
             this.toggleMenu(e.target);
+            this.soundMenu();
         });
 
 
@@ -25,7 +27,7 @@ export default class InfoField {
             this.pauseTimer();
         } else {
             infoMenu.innerText = 'Pause game';
-            this.startTimer()
+            this.startTimer();
         }
     }
 

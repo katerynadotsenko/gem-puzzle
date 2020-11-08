@@ -14,7 +14,8 @@ window.onload = () => {
         fieldSizePX = 400,
         tilesSize = fieldSizePX/gameFieldRowQuantity,
         isImage = false,
-        isWin = false;
+        isWin = false,
+        isSound = true;
 
     let winCombination = generateWinCombination();
 
@@ -25,6 +26,9 @@ window.onload = () => {
         infoField.updateMovesField(infoField.moves++);
     }, () => {
         checkIsWin();
+    },
+    () => {
+        soundMoveTile();
     });
 
 
@@ -54,13 +58,24 @@ window.onload = () => {
         },
         () => {
             autocompleteGame();
+        },
+        () => {
+            toggleSound();
+        },
+        () => {
+            soundTick();
+        },
+        () => {
+            soundStartGame();
         }
     );
 
 
     menu.createMenu();
 
-    const infoField = new InfoField();
+    const infoField = new InfoField(() => {
+        soundMenu();
+    });
     infoField.init();
 
     const infoMenu = document.querySelector('.info__menu-button');
@@ -78,6 +93,43 @@ window.onload = () => {
         } else {
             tiles.clearTilesFromImage();
         }
+    }
+
+
+    /* sounds*/
+
+    function toggleSound() {
+        isSound = !isSound;
+        InfoField.isSound = isSound;
+        console.log("script toggle sound - ", isSound);
+    }
+
+    function soundMenu() {
+        if (!isSound) return;
+        const sound = document.querySelector(`audio[data-sound="menu`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
+    function soundTick() {
+        if (!isSound) return;
+        const sound = document.querySelector(`audio[data-sound="tick`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
+    function soundStartGame() {
+        if (!isSound) return;
+        const sound = document.querySelector(`audio[data-sound="start-game`);
+        sound.currentTime = 0;
+        sound.play();
+    }
+
+    function soundMoveTile() {
+        if (!isSound) return;
+        const sound = document.querySelector(`audio[data-sound="main`);
+        sound.currentTime = 0;
+        sound.play();
     }
 
 

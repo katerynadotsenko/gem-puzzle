@@ -1,6 +1,6 @@
 export default class MenuView {
-    constructor() {
-
+    constructor(soundTick) {
+        this.soundTick = soundTick;
     }
 
     init() {
@@ -26,9 +26,7 @@ export default class MenuView {
         goBackButton.innerText = 'go back';
 
         goBackButton.addEventListener('click', () => {
-            const sound = document.querySelector(`audio[data-sound="tick`);
-            sound.currentTime = 0;
-            sound.play();
+            this.soundTick();
             this.changeActiveMenu('.menu__list');
         });
 
@@ -50,7 +48,8 @@ export default class MenuView {
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
                                 <li id="settings">Settings</li>
-                                <li id="autocomplete">Autocomplete Game</li>`;
+                                <li id="autocomplete">Autocomplete Game</li>
+                                <li id="sound">Sound</li>`;
         return menuList;
     }
 

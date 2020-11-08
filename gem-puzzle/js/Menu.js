@@ -5,16 +5,19 @@ export default class Menu {
 
     MenuView;
 
-    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu, autocompleteGame) {
+    constructor(saveGameCallback, startNewGame, loadSavedGame, changeTilesQuantity, toggleTilesImageBg, toggleMenu, autocompleteGame, toggleSound, soundTick, soundStartGame) {
         this.data = new Data();
         this.startNewGame = startNewGame;
         this.saveGameCallback = saveGameCallback;
         this.toggleTilesImageBg =toggleTilesImageBg;
         this.toggleMenu = toggleMenu;
         this.autocompleteGame = autocompleteGame;
+        this.toggleSound = toggleSound;
         this.loadSavedGame = loadSavedGame;
+        this.soundTick = soundTick;
+        this.soundStartGame =soundStartGame;
         this.changeTilesQuantity = changeTilesQuantity;
-        this.menuView = new MenuView();
+        this.menuView = new MenuView(() => this.soundTick());
     }
 
     saveGame(field, time, moves) {
@@ -111,18 +114,6 @@ export default class Menu {
     }
 
 
-    soundTick() {
-        const sound = document.querySelector(`audio[data-sound="tick`);
-        sound.currentTime = 0;
-        sound.play();
-    }
-
-    soundStartGame() {
-        const sound = document.querySelector(`audio[data-sound="start-game`);
-        sound.currentTime = 0;
-        sound.play();
-    }
-
     bindMenuItemListeners(item) {
         item.addEventListener('click', () => {
             switch (item.id) {
@@ -148,6 +139,10 @@ export default class Menu {
                     this.soundTick();
                     this.toggleMenu();
                     this.autocompleteGame();
+                break;
+                case 'sound':
+                    this.toggleSound();
+                    console.log("toggle sound");
                 break;
                 default:
                 break;
