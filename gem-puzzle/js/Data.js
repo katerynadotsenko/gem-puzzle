@@ -25,4 +25,26 @@ export default class Data {
         savedGames.push(game);
         localStorage.setItem('savedGames', JSON.stringify(savedGames));
     }
+
+    getBestScores() {
+        const bestScores = JSON.parse(localStorage.getItem('bestScores')) || [];
+        return bestScores.slice(0, 10);
+    }
+
+    saveBestScore(date, moves, size, time) {
+        const bestScores = this.getBestScores();
+        let bestScore = {
+            date: date,
+            moves: moves,
+            size: `${size}x${size}`,
+            time: time
+        };
+
+        bestScores.push(bestScore);
+        bestScores.sort((a, b) => a.time - b.time);
+        bestScores.sort((a, b) => a.moves - b.moves);
+        bestScores.slice(0, 10);
+
+        localStorage.setItem('bestScores', JSON.stringify(bestScores));
+    }
 }

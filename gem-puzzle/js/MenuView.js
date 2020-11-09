@@ -47,6 +47,7 @@ export default class MenuView {
         menuList.innerHTML = `<li id="save">Save Game</li>
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
+                                <li id="best-scores">Best scores</li>
                                 <li id="settings">Settings</li>
                                 <li id="autocomplete">Autocomplete Game</li>`;
         return menuList;
@@ -121,6 +122,68 @@ export default class MenuView {
         return savedGame;
     }
 
+    generateBestScoresView() {
+        const bestScores = document.createElement('div');
+        bestScores.classList.add('menu__best-scores', 'menu_hidden');
+        bestScores.innerHTML = `<h2>Best Scores</h2>`;
+        bestScores.append(this.generateGoBackButton());
+        return bestScores;
+    }
+
+    updateBestScoresView(bestScores) {
+        let bestScoresDOM = document.querySelector('.best-scores');
+        if (bestScoresDOM) {
+            bestScoresDOM.remove();
+        }
+        document.querySelector('.menu__best-scores').append(this.generateBestScoresList());
+        if (bestScores) {
+            bestScoresDOM = document.querySelector('.best-scores');
+            bestScores.forEach(bestScore => {
+                this.generateBestScoreItemView(bestScore).forEach((item, i) => {
+                    bestScoresDOM.children[i].append(item);
+                });
+            });
+        }
+    }
+
+    generateBestScoresList() {
+        const bestScoresList = document.createElement('div');
+        bestScoresList.classList.add('best-scores');
+        bestScoresList.innerHTML = `<div class="best-scores__date">
+                                            <div class="best-scores__title">Date</div>
+                                    </div>
+                                    <div class="best-scores__moves">
+                                        <div class="best-scores__title">Moves</div>
+                                    </div>
+                                    <div class="best-scores__size">
+                                        <div class="best-scores__title">Size</div>
+                                    </div>
+                                    <div class="best-scores__time">
+                                        <div class="best-scores__title">Time</div>
+                                    </div>`;
+        return bestScoresList;
+    }
+
+    generateBestScoreItemView(item) {
+        const bestScoresDate = document.createElement('div');
+        bestScoresDate.classList.add('best-scores__item');
+        bestScoresDate.innerText = `${item.date}`;
+
+        const bestScoresMoves = document.createElement('div');
+        bestScoresMoves.classList.add('best-scores__item');
+        bestScoresMoves.innerText = `${item.moves}`;
+
+        const bestScoresSize = document.createElement('div');
+        bestScoresSize.classList.add('best-scores__item');
+        bestScoresSize.innerText = `${item.size}`;
+
+        const bestScoresTime = document.createElement('div');
+        bestScoresTime.classList.add('best-scores__item');
+        bestScoresTime.innerText = `${item.time}`;
+
+        return new Array(bestScoresDate, bestScoresMoves, bestScoresSize, bestScoresTime);
+    }
+
     generateWinView() {
         let win = document.createElement('div');
         win.classList.add('menu__win', 'menu_hidden');
@@ -165,12 +228,13 @@ export default class MenuView {
         return settings;
     }
 
-    renderMenuToDom(menuList, menuSavedGames, win, menuSettings) {
+    renderMenuToDom(menuList, menuSavedGames, menuBestScores, win, menuSettings) {
         const gameFieldWithBorder = document.querySelector('.game-field-with-border');
         const menu = this.generateMenuView();
 
         menu.append(menuList);
         menu.append(menuSavedGames);
+        menu.append(menuBestScores);
         menu.append(win);
         menu.append(menuSettings);
 

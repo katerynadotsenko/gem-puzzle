@@ -9,9 +9,10 @@ window.onload = () => {
 
     const data = new Data();
     let savedGames = data.getSavedGames();
+    let bestScores = data.getBestScores();
     
     let gameFieldRowQuantity = 4,
-        fieldSizePX = 400, //TODO auto changing size field if window size changing
+        fieldSizePX = 400, //TODO auto changing size field if window size changing //TODO add settings to local storage: field size, img/num and sound
         tilesSize = fieldSizePX/gameFieldRowQuantity,
         isImage = false,
         isWin = false,
@@ -76,6 +77,9 @@ window.onload = () => {
 
 
     menu.createMenu();
+    if(bestScores) {
+        menu.updateBestScores(bestScores);
+    }
 
     const infoField = new InfoField(() => {
         soundMenu();
@@ -171,13 +175,28 @@ window.onload = () => {
             const winTime = document.querySelector('.info__time').lastElementChild.textContent;
             const winMoves = document.querySelector('.info__moves').lastElementChild.textContent;
             menu.showWinInfo(winTime, winMoves);
-            infoField.toggleMenu(infoMenu);
+            soundWin();
             setTimeout(() => {
-                soundWin();
-            }, 800);
+                infoField.toggleMenu(infoMenu);
+            }, 500);
+            addResultsToBestScores();
+            bestScores = data.getBestScores();
+            menu.updateBestScores(bestScores);
         }
 
         return isWin;
+    }
+
+    function addResultsToBestScores() {
+        const date = new Date();
+        let day = date.getDate(),
+            month = date.getMonth() + 1,
+            year = date.getFullYear();
+
+        day = day > 9 ? day : '0' + day;
+        month = month > 9 ? month : '0' + month;
+
+        data.saveBestScore(`${day}/${month}/${year}`, infoField.moves, tiles.tilesArr.length, infoField.time)
     }
 
 

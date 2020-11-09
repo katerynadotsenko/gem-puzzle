@@ -78,6 +78,15 @@ export default class Menu {
         });
     }
 
+    showBestScores() {
+        console.log('best-scores');
+        this.menuView.changeActiveMenu('.menu__best-scores'); 
+    }
+
+    updateBestScores(bestScores) {
+        this.menuView.updateBestScoresView(bestScores);
+    }
+
     showWinInfo(winTime, winMoves) {
         this.menuView.updateWinView(winTime, winMoves);
         this.menuView.changeActiveMenu('.menu__win');
@@ -90,6 +99,7 @@ export default class Menu {
         });
 
         const menuSavedGames = this.menuView.generateSavedGamesView();
+        const menuBestScores = this.menuView.generateBestScoresView();
         const win = this.menuView.generateWinView();
         const menuSettings = this.menuView.generateSettingsView();
 
@@ -112,7 +122,7 @@ export default class Menu {
             console.log("toggle sound");
         });
 
-        this.menuView.renderMenuToDom(menuList, menuSavedGames, win, menuSettings);
+        this.menuView.renderMenuToDom(menuList, menuSavedGames, menuBestScores, win, menuSettings);
     }
 
     showSettings() {
@@ -136,6 +146,10 @@ export default class Menu {
                 case 'saved-games':
                     this.soundTick();
                     this.showSavedGames();
+                break;
+                case 'best-scores':
+                    this.soundTick();
+                    this.showBestScores();
                 break;
                 case 'settings':
                     this.soundTick();
