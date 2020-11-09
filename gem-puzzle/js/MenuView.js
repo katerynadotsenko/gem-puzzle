@@ -48,8 +48,7 @@ export default class MenuView {
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
                                 <li id="settings">Settings</li>
-                                <li id="autocomplete">Autocomplete Game</li>
-                                <li id="sound">Sound</li>`;
+                                <li id="autocomplete">Autocomplete Game</li>`;
         return menuList;
     }
 
@@ -138,23 +137,28 @@ export default class MenuView {
         let settings = document.createElement('div');
         settings.classList.add('menu__settings', 'menu_hidden');
         
-        settings.innerHTML = `<div class="settings__size">
-                                <label for="field-size">Choose the field size:</label>
-                                    <select name="field-size" id="field-size">
-                                        <option value="3">3х3</option>
-                                        <option selected="selected" value="4">4х4</option>
-                                        <option value="5">5х5</option>
-                                        <option value="6">6х6</option>
-                                        <option value="7">7х7</option>
-                                        <option value="8">8х8</option>
-                                    </select>
-                                </div>
-                                <div class="settings__mode">
-                                    <label for="mode">Set the game mode:</label>
-                                    <select name="mode" id="mode">
-                                        <option selected="selected" value="no">numbers</option>
-                                        <option value="yes">image</option>
-                                    </select>
+        settings.innerHTML = `<div class="settings__container">
+                                    <div class="settings__size">
+                                    <label for="field-size">Choose the field size:</label>
+                                        <select name="field-size" id="field-size">
+                                            <option value="3">3х3</option>
+                                            <option selected="selected" value="4">4х4</option>
+                                            <option value="5">5х5</option>
+                                            <option value="6">6х6</option>
+                                            <option value="7">7х7</option>
+                                            <option value="8">8х8</option>
+                                        </select>
+                                    </div>
+                                    <div class="settings__mode">
+                                        <label for="mode">Set the game mode:</label>
+                                        <select name="mode" id="mode">
+                                            <option selected="selected" value="no">numbers</option>
+                                            <option value="yes">image</option>
+                                        </select>
+                                    </div>
+                                    <span class="material-icons settings__sound">
+                                        volume_up
+                                    </span>
                                 </div>`;
         settings.append(this.generateGoBackButton());
 

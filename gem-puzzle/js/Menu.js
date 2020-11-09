@@ -93,13 +93,23 @@ export default class Menu {
         const win = this.menuView.generateWinView();
         const menuSettings = this.menuView.generateSettingsView();
 
-        menuSettings.children[0].children[1].addEventListener('change', (e) => {
+        menuSettings.firstChild.children[0].children[1].addEventListener('change', (e) => {
             this.changeTilesQuantity(e.target.value);
             this.startNewGame();
         });
 
-        menuSettings.children[1].children[1].addEventListener('change', (e) => {
+        menuSettings.firstChild.children[1].children[1].addEventListener('change', (e) => {
             this.toggleTilesImageBg(e.target.value === 'yes' ? true : false);
+        });
+
+        menuSettings.firstChild.children[2].addEventListener('click', (e) => {
+            this.toggleSound();
+            if (e.target.innerText == `volume_off`) {
+                e.target.innerText = `volume_up`;
+            } else {
+                e.target.innerText = `volume_off`;
+            }
+            console.log("toggle sound");
         });
 
         this.menuView.renderMenuToDom(menuList, menuSavedGames, win, menuSettings);
@@ -135,10 +145,6 @@ export default class Menu {
                     this.soundTick();
                     this.toggleMenu();
                     this.autocompleteGame();
-                break;
-                case 'sound':
-                    this.toggleSound();
-                    console.log("toggle sound");
                 break;
                 default:
                 break;

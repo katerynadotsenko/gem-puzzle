@@ -11,7 +11,7 @@ export default class InfoFieldView {
     generateInfoField() {
         const infoField = document.createElement('div');
         infoField.classList.add('info');
-        infoField.style.width = `${this.gameFieldSize}px`;
+        infoField.style.width = `${this.gameFieldSize + 60}px`;
         infoField.innerHTML = `<div class="info__time">
                                     <span>Time</span>
                                     <span>00:00:00</span>

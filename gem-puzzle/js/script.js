@@ -11,7 +11,7 @@ window.onload = () => {
     let savedGames = data.getSavedGames();
     
     let gameFieldRowQuantity = 4,
-        fieldSizePX = 400,
+        fieldSizePX = 400, //TODO auto changing size field if window size changing
         tilesSize = fieldSizePX/gameFieldRowQuantity,
         isImage = false,
         isWin = false,
