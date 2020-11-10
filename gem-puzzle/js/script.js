@@ -40,7 +40,6 @@ window.onload = () => {
 
     tiles.init(gameFieldRowQuantity, tilesSize, isImage);
 
-
     bindTileListeners();
 
     const menu = new Menu(
@@ -92,6 +91,33 @@ window.onload = () => {
     if (savedGames.length) {
         infoField.toggleMenu(infoMenu);
         menu.showSavedGames();
+    }
+
+    checkWindowSize();
+
+    window.onresize = () => {
+        checkWindowSize();
+    }
+
+    function checkWindowSize() {
+        console.log(document.body.clientWidth);
+        if (document.body.clientWidth < 465) {
+            console.log("< ", 465);
+            fieldSizePX = document.body.clientWidth - 65;
+            changeGameFieldSize();
+        } else {
+            if (fieldSizePX !== 400) {
+                fieldSizePX = 400;
+                changeGameFieldSize();
+            }
+        }
+    }
+
+    function changeGameFieldSize() {
+        tilesSize = fieldSizePX/gameFieldRowQuantity;
+        gameFieldView.changeGameFieldSize(fieldSizePX);
+        tiles.changeTilesSize(gameFieldRowQuantity, tilesSize);
+        infoField.changeInfoFieldSize(fieldSizePX);
     }
 
     function toggleTilesImageBg(isImg) {

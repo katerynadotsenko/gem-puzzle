@@ -292,6 +292,8 @@ h2 {
 }
 
 .game-field {
+    width: 100%;
+    height: 100%;
     background-color: #bf9d7a;
     box-shadow: inset 0 0 8px 2px #593b1e;
     border: none;

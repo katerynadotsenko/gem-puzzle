@@ -37,6 +37,11 @@ export default class Tiles {
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
     }
 
+    changeTilesSize(gameFieldRowQuantity, tilesSize){
+        this.tilesSize = tilesSize;
+        this.tileView.changeTilesSize(tilesSize);
+    }
+
    /* async autocompleteGame(tilesArr) {
         this.tilesArr = tilesArr;
 
@@ -501,7 +506,6 @@ export default class Tiles {
         tile.dataset.top = emptyArrPosTop;
         tile.dataset.left = emptyArrPosLeft;
 
-        //TODO check bugs if use drag & drop
         tile.animate([
             { top: tilePosX,  left: tilePosY},
             { top: `${Number(emptyArrPosTop) * this.tilesSize}px`,  left: `${Number(emptyArrPosLeft) * this.tilesSize}px`}

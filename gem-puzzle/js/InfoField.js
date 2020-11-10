@@ -19,6 +19,11 @@ export default class InfoField {
 
     }
 
+    changeInfoFieldSize(gameFieldSize) {
+        const infoField = document.querySelector('.info');
+        infoField.style.width = `${gameFieldSize + 60}px`;
+    }
+
     toggleMenu(infoMenu) {
         const info = document.querySelector('.info');
         info.classList.toggle('active');

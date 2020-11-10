@@ -18,8 +18,8 @@ export default class GameFieldView {
     generateGameField(fieldSize) {
         this.gameField = document.createElement('div');
         this.gameField.classList.add('game-field');
-        this.gameField.style.width = `${fieldSize}px`;
-        this.gameField.style.height = `${fieldSize}px`;
+        //this.gameField.style.width = `${fieldSize}px`;
+        //this.gameField.style.height = `${fieldSize}px`;
 
         const gameFieldWithBorder = document.createElement('div');
         gameFieldWithBorder.classList.add('game-field-with-border');
@@ -31,10 +31,11 @@ export default class GameFieldView {
         return gameFieldWithBorder;
     }
 
-    /*changeFieldSize(fieldSize) {
-        this.gameField.style.width = `${fieldSize}px`;
-        this.gameField.style.height = `${fieldSize}px`;
-    }*/
+    changeGameFieldSize(fieldSize) {
+        const gameFieldWithBorder = document.querySelector('.game-field-with-border');
+        gameFieldWithBorder.style.width = `${fieldSize + 60}px`;
+        gameFieldWithBorder.style.height = `${fieldSize + 60}px`;
+    }
 
     clearGameField() {
         this.gameField.querySelectorAll('[data-key]').forEach(item => {

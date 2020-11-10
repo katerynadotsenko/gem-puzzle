@@ -28,4 +28,17 @@ export default class TileView {
             }
         }
     }
+
+    changeTilesSize(tilesSize){
+        const tilesDomArr = document.querySelectorAll('.tile');
+        tilesDomArr.forEach(tile => {
+            let top = tile.dataset.top;
+            let left = tile.dataset.left;
+            tile.style.width = `${tilesSize}px`;
+            tile.style.height = `${tilesSize}px`;
+            tile.style.top = `${top * tilesSize}px`;
+            tile.style.left = `${left * tilesSize}px`;
+        })
+        
+    }
 }
