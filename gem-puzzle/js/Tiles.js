@@ -15,7 +15,7 @@ export default class Tiles {
         this.tileView = new TileView();
     }
 
-    init(gameFieldRowQuantity, tilesSize, isImage) {
+    init(gameFieldRowQuantity, tilesSize, isImage, imgNum=false) {
         this.tilesSize = tilesSize;
         this.tilesArr = [];
 
@@ -23,7 +23,7 @@ export default class Tiles {
         this.shuffleTilesArr(gameFieldRowQuantity);
         this.loadTiles(gameFieldRowQuantity, this.tilesArr, tilesSize);
         if (isImage) {
-            this.generateImageToTiles(gameFieldRowQuantity);
+            this.generateImageToTiles(gameFieldRowQuantity, imgNum);
         }
 
         return this.tilesArr;
@@ -31,7 +31,9 @@ export default class Tiles {
     }
 
     loadTiles(gameFieldRowQuantity, tilesArr, tilesSize) {
-        console.log(tilesArr);
+        console.log("tilesArr loadTiles - ", tilesArr);
+        console.log("gameFieldRowQuantity loadTiles - ", gameFieldRowQuantity);
+        console.log("tilesSize loadTiles - ", tilesSize);
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
     }
 
@@ -256,7 +258,7 @@ export default class Tiles {
         return Math.floor(Math.random() * 150) + 1;
     }
 
-    generateImageToTiles(gameFieldRowQuantity) {
+    generateImageToTiles(gameFieldRowQuantity, imgNum=false) {
         let canvas = document.createElement('canvas'),
             ctx = canvas.getContext('2d'),
             parts = [],
@@ -264,8 +266,11 @@ export default class Tiles {
 
         img.onload = split;
 
-        img.src = `../assets/images/${this.generateImageNumber()}.jpg`;
-        console.log(img.src);
+        if (!imgNum) {
+            imgNum = this.generateImageNumber();
+        }
+
+        img.src = `../assets/images/${imgNum}.jpg`;
 
         function split() {
             let w2 = img.width / gameFieldRowQuantity,
@@ -302,7 +307,7 @@ export default class Tiles {
                 }
                 
             });
-        } 
+        }
     }
 
 
@@ -545,7 +550,7 @@ export default class Tiles {
         } else if (gameFieldRowQuantity == 4) {
             shuffleSteps = 140;
         } else {
-            shuffleSteps = gameFieldRowQuantity ** 2 * 70;
+            shuffleSteps = gameFieldRowQuantity**2 * 25;
         }
     
         console.log("shuffleSteps - ", shuffleSteps);
@@ -571,9 +576,9 @@ export default class Tiles {
             //check direction to prevent repeated steps
             
             if ((prevStep == 1 && moveDirection == 3) || (prevStep == 3 && moveDirection == 1)) {
-                moveDirection = emptyPosition.left < 1 ? 4 : 2;
+                moveDirection = emptyPosition.left < 1 ? 4 : 2 * (Math.floor(Math.random() * 2) + 1);
             } else if ((prevStep == 2 && moveDirection == 4) || (prevStep == 4 && moveDirection == 2)) {
-                moveDirection = emptyPosition.top < 1 ? 3 : 1;
+                moveDirection = emptyPosition.top < 1 ? 3 : 1 + Math.floor(Math.random() * 2) * 2;
             }
 
             if (prevStep == moveDirection) {

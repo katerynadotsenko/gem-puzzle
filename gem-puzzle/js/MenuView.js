@@ -58,7 +58,18 @@ export default class MenuView {
         const menuSavedGames = document.createElement('div');
         menuSavedGames.classList.add('menu__saved-games', 'menu_hidden');
 
-        const savedGamesCarousel = document.createElement('div');
+        menuSavedGames.innerHTML = `<div class="saved-games__header">
+                                        <div class="carousel__arrow carousel__arrow_left">
+                                            <span class="material-icons">arrow_back_ios</span>
+                                        </div>
+                                        <h2>Saved games</h2>
+                                        <div class="carousel__arrow carousel__arrow_right">
+                                            <span class="material-icons">arrow_forward_ios</span>
+                                        </div>
+                                    </div>
+                                    <div class="saved-games__carousel"></div>`
+
+        /*const savedGamesCarousel = document.createElement('div');
         savedGamesCarousel.classList.add('saved-games__carousel');
 
         const leftArrowButton = document.createElement('button');
@@ -67,25 +78,26 @@ export default class MenuView {
 
         const rightArrowButton = document.createElement('button');
         rightArrowButton.classList.add('carousel__right-arrow-button');
-        rightArrowButton.innerText = 'next';
+        rightArrowButton.innerText = 'next';*/
 
         const notification = document.createElement('div');
         notification.classList.add('saved-games__notification');
         notification.innerText = 'You don\'t have any saved games yet';
         
-        menuSavedGames.append(savedGamesCarousel);
+        /*menuSavedGames.append(savedGamesCarousel);
         menuSavedGames.append(leftArrowButton);
-        menuSavedGames.append(rightArrowButton);
+        menuSavedGames.append(rightArrowButton);*/
         menuSavedGames.append(notification);
         menuSavedGames.append(this.generateGoBackButton());
+        console.log("menuSavedGames - ", menuSavedGames);
         
         return menuSavedGames;
     }
 
     updateSavedGamesView(savedGames, notification=false) {
         let savedGamesList = '';
-        const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
-        const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
+        const leftArrowButton = document.querySelector('.carousel__arrow_left');
+        const rightArrowButton = document.querySelector('.carousel__arrow_right');
 
         if (notification) {
             const notification = document.querySelector('.saved-games__notification');
@@ -99,10 +111,8 @@ export default class MenuView {
 
             notification.style.display = 'none';
 
-            leftArrowButton.style.display = 'inline-block';
-            rightArrowButton.style.display = 'inline-block';
-
             const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            savedGamesCarousel.style.left = '0';
             savedGamesCarousel.style.width = `${savedGames.length * 100}%`;
             
             savedGames.forEach(game => {
@@ -114,11 +124,27 @@ export default class MenuView {
     }
 
     generateSavedGameView(game) {
-        let savedGame = `<span>Field size: </span>${JSON.parse(game.field).length}x${JSON.parse(game.field).length}</span><br>
-                                <span>${game.field}</span><br>
-                                <span>Time: </span><span>${game.time}</span><br>
-                                <span>Moves: </span><span>${game.moves}</span><br>
-                                <button class="menu__button-load" id="${game.id}">Load game</button>`;
+        let savedGameField = '';
+
+        if (game.imgNum) {
+            savedGameField = `<img width='120px' src='../assets/images/${game.imgNum}.jpg'>`;
+        } else {
+            JSON.parse(game.field).forEach((arr, i) => {
+                let row = '';
+                arr.forEach(num => {
+                    row += `<div class="field__row-item">${num}</div>`;
+                });
+                savedGameField += `<div class="carousel__field__row">${row}</div>`;
+            });
+        }
+
+        let savedGame = `<div class="carousel__field">${savedGameField}</div>
+                            <div class="carousel__info">
+                                <div><span>Field size: </span>${JSON.parse(game.field).length}x${JSON.parse(game.field).length}</span></div>
+                                <div><span>Time:</span> <span>${game.time}</span></div>
+                                <div>Moves:</span> <span>${game.moves}</span></div>
+                                <button class="menu__button-load" id="${game.id}">Load game</button>
+                            </div>`;
         return savedGame;
     }
 

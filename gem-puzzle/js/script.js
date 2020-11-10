@@ -16,7 +16,8 @@ window.onload = () => {
         tilesSize = fieldSizePX/gameFieldRowQuantity,
         isImage = false,
         isWin = false,
-        isSound = true;
+        isSound = true,
+        imgNum = false;
 
     let winCombination = generateWinCombination();
 
@@ -53,7 +54,7 @@ window.onload = () => {
             loadSavedGame(savedGame);
         },
         (fieldSize) => {
-            changeTilesQuantity(fieldSize); ///TODO
+            changeTilesQuantity(fieldSize);
         },
         (isImg) => {
             toggleTilesImageBg(isImg);
@@ -97,9 +98,11 @@ window.onload = () => {
         isImage = isImg;
         console.log("isImage - ", isImage);
         if (isImage) {
-            tiles.generateImageToTiles(gameFieldRowQuantity);
+            imgNum = tiles.generateImageNumber();
+            tiles.generateImageToTiles(gameFieldRowQuantity, imgNum);
         } else {
             tiles.clearTilesFromImage();
+            imgNum = false;
         }
     }
 
@@ -151,8 +154,6 @@ window.onload = () => {
         gameFieldRowQuantity = Number(fieldSize);
         tilesSize = fieldSizePX / gameFieldRowQuantity;
         winCombination = generateWinCombination();
-        //gameFieldView.changeFieldSize(fieldSize);
-        console.log("gameFieldRowQuantity changed - ", gameFieldRowQuantity);
     }
 
     function generateWinCombination() {
@@ -164,7 +165,6 @@ window.onload = () => {
         return winCombination;
     }
 
-    //TODO check is win for lager fields
     function checkIsWin() {
         
         isWin = winCombination === tiles.tilesArr.map(arr => arr.join('-')).join('-');
@@ -201,7 +201,7 @@ window.onload = () => {
 
 
     function saveGameCallback() {
-        menu.saveGame(tiles.tilesArr, infoField.time, infoField.moves)
+        menu.saveGame(tiles.tilesArr, infoField.time, infoField.moves, imgNum);
     }
 
 
@@ -211,17 +211,15 @@ window.onload = () => {
         infoField.moves = 1;
         infoField.updateMovesField(0);
         gameFieldView.clearGameField();
-        console.log("tilesSize - ", tilesSize);
-        tiles.init(gameFieldRowQuantity, tilesSize, isImage);
+        imgNum = tiles.generateImageNumber();
+        tiles.init(gameFieldRowQuantity, tilesSize, isImage, imgNum);
         bindTileListeners();
-        console.log('new-game');
     }
 
     function toggleMenu() {
         infoField.toggleMenu(infoMenu);
     }
 
-    //change field size in settings
     function loadSavedGame(savedGame) {
         infoField.stopTimer(Number(savedGame.time));
         infoField.moves = savedGame.moves+1;
@@ -231,9 +229,14 @@ window.onload = () => {
         tiles.tilesArr = JSON.parse(savedGame.field);
         gameFieldRowQuantity = tiles.tilesArr.length;
         tilesSize = fieldSizePX/gameFieldRowQuantity;
-        console.log('loadSavedGame - ', tiles.tilesArr);
-        //changeFieldSize(tiles.tilesArr.length);
         tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr, tilesSize);
+        if (savedGame.imgNum) {
+            imgNum = savedGame.imgNum;
+            tiles.generateImageToTiles(gameFieldRowQuantity, imgNum);
+            console.log("savedGame.imgNum --- ", imgNum);
+        } else {
+            imgNum = false;
+        }
         bindTileListeners();
     }
 

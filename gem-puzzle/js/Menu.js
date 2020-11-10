@@ -18,8 +18,8 @@ export default class Menu {
         this.menuView = new MenuView(() => this.soundTick());
     }
 
-    saveGame(field, time, moves) {
-        this.data.saveGame(field, time, moves)
+    saveGame(field, time, moves, imgNum) {
+        this.data.saveGame(field, time, moves, imgNum);
     }
 
     getSavedGames() {
@@ -37,6 +37,7 @@ export default class Menu {
 
             //Carousel
             const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            
             const carouselItem = document.querySelector('.carousel__item');
 
             const carouselItemWidth = carouselItem.offsetWidth;
@@ -44,8 +45,8 @@ export default class Menu {
         
             let activeItem = 0;
 
-            const leftArrowButton = document.querySelector('.carousel__left-arrow-button');
-            const rightArrowButton = document.querySelector('.carousel__right-arrow-button');
+            const leftArrowButton = document.querySelector('.carousel__arrow_left');
+            const rightArrowButton = document.querySelector('.carousel__arrow_right');
 
             leftArrowButton.addEventListener('click', () => {
                 if (activeItem < 0) {
