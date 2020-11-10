@@ -2,9 +2,11 @@ import GameFieldView from './GameFieldView.js';
 import Tiles from './Tiles.js';
 import InfoField from './InfoField.js';
 import Menu from './Menu.js';
-import Data from './Data.js'
+import Data from './Data.js';
 
-
+//TODO notification when the game is saved
+//todo implement autocomplete game for saved games
+//TODO fix time in score and saved games
 window.onload = () => {
 
     const data = new Data();
@@ -12,7 +14,7 @@ window.onload = () => {
     let bestScores = data.getBestScores();
     
     let gameFieldRowQuantity = 4,
-        fieldSizePX = 400, //TODO auto changing size field if window size changing //TODO add settings to local storage: field size, img/num and sound
+        fieldSizePX = 400,
         tilesSize = fieldSizePX/gameFieldRowQuantity,
         isImage = false,
         isWin = false,

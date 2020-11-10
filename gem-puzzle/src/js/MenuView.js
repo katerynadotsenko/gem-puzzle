@@ -127,7 +127,7 @@ export default class MenuView {
         let savedGameField = '';
 
         if (game.imgNum) {
-            savedGameField = `<img width='120px' src='../assets/images/${game.imgNum}.jpg'>`;
+            savedGameField = `<img width='120px' src='assets/images/${game.imgNum}.jpg'>`;
         } else {
             JSON.parse(game.field).forEach((arr, i) => {
                 let row = '';

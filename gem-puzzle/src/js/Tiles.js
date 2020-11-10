@@ -252,7 +252,7 @@ export default class Tiles {
         tiles.forEach((tile) => {
             tileNumber = Number(tile.dataset.key);
             if (tileNumber > 0) {
-                tile.style.backgroundImage = `url('../assets/tile-img.jpg')`;
+                tile.style.backgroundImage = `url('assets/tile-img.jpg')`;
                 tile.style.backgroundSize = 'none';
                 tile.style.color = 'rgba(48, 28, 12, 0.7)';
             }
@@ -275,7 +275,7 @@ export default class Tiles {
             imgNum = this.generateImageNumber();
         }
 
-        img.src = `../assets/images/${imgNum}.jpg`;
+        img.src = `assets/images/${imgNum}.jpg`;
 
         function split() {
             let w2 = img.width / gameFieldRowQuantity,
