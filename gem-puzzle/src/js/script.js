@@ -4,7 +4,6 @@ import InfoField from './InfoField.js';
 import Menu from './Menu.js';
 import Data from './Data.js';
 
-//TODO notification when the game is saved
 //todo implement autocomplete game for saved games
 //TODO fix time in score and saved games
 window.onload = () => {

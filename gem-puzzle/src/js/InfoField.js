@@ -33,6 +33,8 @@ export default class InfoField {
         } else {
             infoMenu.innerText = 'Pause game';
             this.startTimer();
+            const saveMenuItem = document.getElementById('save');
+            saveMenuItem.classList.remove('disabled');
         }
     }
 

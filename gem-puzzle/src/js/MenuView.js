@@ -33,6 +33,26 @@ export default class MenuView {
         return goBackButton;
     }
 
+    generateSavedGameNotification() {
+        const notification = document.createElement('div');
+        notification.classList.add('menu__notification', 'hide');
+        notification.innerText = "The game was successfully saved!";
+        
+        return notification;
+    }
+
+    showSavedGameNotification() {
+        const notification = document.querySelector('.menu__notification');
+        notification.classList.remove('hide');
+
+        setTimeout(() => {
+            notification.classList.add('hide');
+        }, 2500);
+
+        const saveMenuItem = document.getElementById('save');
+        saveMenuItem.classList.add('disabled');
+    }
+
 
     generateMenuView() {
         let menu = document.createElement('div');
@@ -44,7 +64,8 @@ export default class MenuView {
     generateMenuListView() {
         const menuList = document.createElement('ul');
         menuList.classList.add('menu__list', 'menu_active');
-        menuList.innerHTML = `<li id="save">Save Game</li>
+        menuList.append(this.generateSavedGameNotification());
+        menuList.innerHTML += `<li id="save">Save Game</li>
                                 <li id="new-game">New Game</li>
                                 <li id="saved-games">Saved Games</li>
                                 <li id="best-scores">Best scores</li>

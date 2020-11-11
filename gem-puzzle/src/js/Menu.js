@@ -20,6 +20,7 @@ export default class Menu {
 
     saveGame(field, time, moves, imgNum) {
         this.data.saveGame(field, time, moves, imgNum);
+        this.menuView.showSavedGameNotification();
     }
 
     getSavedGames() {
