@@ -18,8 +18,8 @@ export default class Menu {
         this.menuView = new MenuView(() => this.soundTick());
     }
 
-    saveGame(field, time, moves, imgNum) {
-        this.data.saveGame(field, time, moves, imgNum);
+    saveGame(field, time, moves, imgNum, moveHistory) {
+        this.data.saveGame(field, time, moves, imgNum, moveHistory);
         this.menuView.showSavedGameNotification();
     }
 

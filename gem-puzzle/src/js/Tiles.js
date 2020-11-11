@@ -34,10 +34,11 @@ export default class Tiles {
         console.log("tilesArr loadTiles - ", tilesArr);
         console.log("gameFieldRowQuantity loadTiles - ", gameFieldRowQuantity);
         console.log("tilesSize loadTiles - ", tilesSize);
+        this.tilesSize = tilesSize;
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
     }
 
-    changeTilesSize(gameFieldRowQuantity, tilesSize){
+    changeTilesSize(tilesSize) {
         this.tilesSize = tilesSize;
         this.tileView.changeTilesSize(tilesSize);
     }

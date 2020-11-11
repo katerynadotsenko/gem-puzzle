@@ -4,7 +4,7 @@ import InfoField from './InfoField.js';
 import Menu from './Menu.js';
 import Data from './Data.js';
 
-//todo implement autocomplete game for saved games
+
 //TODO fix time in score and saved games
 window.onload = () => {
 
@@ -117,7 +117,7 @@ window.onload = () => {
     function changeGameFieldSize() {
         tilesSize = fieldSizePX/gameFieldRowQuantity;
         gameFieldView.changeGameFieldSize(fieldSizePX);
-        tiles.changeTilesSize(gameFieldRowQuantity, tilesSize);
+        tiles.changeTilesSize(tilesSize);
         infoField.changeInfoFieldSize(fieldSizePX);
     }
 
@@ -228,7 +228,8 @@ window.onload = () => {
 
 
     function saveGameCallback() {
-        menu.saveGame(tiles.tilesArr, infoField.time, infoField.moves, imgNum);
+        console.log("tiles.moveHistory - ", tiles.moveHistory);
+        menu.saveGame(tiles.tilesArr, infoField.time, infoField.moves, imgNum, tiles.moveHistory);
     }
 
 
@@ -256,6 +257,7 @@ window.onload = () => {
         tiles.tilesArr = JSON.parse(savedGame.field);
         gameFieldRowQuantity = tiles.tilesArr.length;
         tilesSize = fieldSizePX/gameFieldRowQuantity;
+        tiles.moveHistory = JSON.parse(savedGame.moveHistory);
         tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr, tilesSize);
         if (savedGame.imgNum) {
             imgNum = savedGame.imgNum;
@@ -265,6 +267,7 @@ window.onload = () => {
             imgNum = false;
         }
         bindTileListeners();
+        winCombination = generateWinCombination();
     }
 
     function autocompleteGame() {

@@ -13,14 +13,15 @@ export default class Data {
         return savedGames.filter(game => game.id == id);
     }
 
-    saveGame(field, time, moves, imgNum) {
+    saveGame(field, time, moves, imgNum, moveHistory) {
         const savedGames = this.getSavedGames();
         let game = {
             id: savedGames.length ? savedGames.length : 0,
             field: JSON.stringify(field),
             time: time,
             moves: moves,
-            imgNum: imgNum
+            imgNum: imgNum,
+            moveHistory: JSON.stringify(moveHistory)
         };
 
         savedGames.push(game);
