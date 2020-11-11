@@ -30,18 +30,17 @@ export default class Menu {
     showSavedGames() {
         console.log('saved-games');
         const savedGames = this.getSavedGames();
-        this.menuView.changeActiveMenu('.menu__saved-games');
+        this.menuView.changeActiveMenu('.saved-games');
         if (!savedGames.length) {
             this.menuView.updateSavedGamesView(null, true);
         } else {
             this.menuView.updateSavedGamesView(savedGames);
 
             //Carousel
-            const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            const savedGamesCarousel = document.querySelector('.carousel');
             
             const carouselItem = document.querySelector('.carousel__item');
 
-            const carouselItemWidth = carouselItem.offsetWidth;
             const itemsQuantity = savedGames.length;
         
             let activeItem = 0;
@@ -52,6 +51,7 @@ export default class Menu {
             leftArrowButton.addEventListener('click', () => {
                 if (activeItem < 0) {
                     activeItem++;
+                    const carouselItemWidth = carouselItem.offsetWidth;
                     savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
                     this.soundTick();
                 }
@@ -60,6 +60,7 @@ export default class Menu {
             rightArrowButton.addEventListener('click', () => {
                 if (activeItem > -(itemsQuantity - 1)) {
                     activeItem--;
+                    const carouselItemWidth = carouselItem.offsetWidth;
                     savedGamesCarousel.style.left = `${activeItem * carouselItemWidth}px`;
                     this.soundTick();
                 }
@@ -128,7 +129,7 @@ export default class Menu {
     }
 
     showSettings() {
-        this.menuView.changeActiveMenu('.menu__settings');
+        this.menuView.changeActiveMenu('.settings');
     }
 
 

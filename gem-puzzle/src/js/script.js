@@ -4,6 +4,7 @@ import InfoField from './InfoField.js';
 import Menu from './Menu.js';
 import Data from './Data.js';
 
+//TODO change settings when load saved game
 
 window.onload = () => {
 
@@ -101,9 +102,9 @@ window.onload = () => {
 
     function checkWindowSize() {
         console.log(document.body.clientWidth);
-        if (document.body.clientWidth < 465) {
+        if (document.body.clientWidth < 485) {
             console.log("< ", 465);
-            fieldSizePX = document.body.clientWidth - 65;
+            fieldSizePX = document.body.clientWidth - 85;
             changeGameFieldSize();
         } else {
             if (fieldSizePX !== 400) {

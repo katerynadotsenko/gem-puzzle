@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "style": "sass --watch src/sass/style.scss src/sass/style.css",
+    "style": "sass --watch src/sass/styles.scss src/sass/styles.css",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch"

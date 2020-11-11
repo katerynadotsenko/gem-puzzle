@@ -1,3 +1,15 @@
+@mixin media-medium {
+    @media (max-width: 400px) {
+        @content;
+    }
+}
+
+@mixin media-small {
+    @media (max-width: 350px) {
+        @content;
+    }
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,6 +20,14 @@ html {
     font-family: Arial, Helvetica, sans-serif;
     user-select: none;
     font-size: 10px;
+
+    @include media-medium {
+        font-size: 9px;
+    }
+
+    @include media-small {
+        font-size: 8px;
+    }
 }
 
 body {
@@ -28,6 +48,7 @@ h2 {
 
 .game-container {
     height: 70%;
+    padding: 10px;
 }
 
 .info {
@@ -40,27 +61,35 @@ h2 {
     color: #4c3116;
     font-weight: bold;
     opacity: .9;
-}
 
-.info__menu-button {
-    border: none;
-    background: transparent;
-    font-size: 1.9rem;
-    color: #4c3116;
-    font-weight: bold;
-    opacity: .9;
-    min-width: 130px;
-    outline: none;
-    cursor: pointer;
-    transition: .2s linear;
-}
+    &__menu-button {
+        border: none;
+        background: transparent;
+        font-size: 1.9rem;
+        color: #4c3116;
+        font-weight: bold;
+        opacity: .9;
+        min-width: 130px;
+        outline: none;
+        cursor: pointer;
+        transition: .2s linear;
 
-.info__menu-button:hover {
-    opacity: 1;
-}
+        &:hover {
+            opacity: 1;
+        }
 
-.info.active+.game-field-with-border .menu {
-    top: 0;
+        @include media-medium {
+            min-width: 120px;
+        }
+
+        @include media-small {
+            min-width: 100px;
+        }
+    }
+
+    &.active+.game-field-with-border .menu {
+        top: 0;
+    }
 }
 
 .menu {
@@ -72,175 +101,203 @@ h2 {
     height: 100%;
     transition: top .5s ease-in-out;
     z-index: 5;
+
+    &_active {
+        position: absolute;
+        width: 100%;
+        padding: 20px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        @include media-medium {
+            padding: 15px;
+        }
+    }
+
+    &_hidden {
+        position: absolute;
+        top: 0;
+        left: 100%;
+    }
+
+    &__notification {
+        position: absolute;
+        font-size: 1.6rem;
+        color: #7cca6f;
+        top: 15px;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        opacity: 1;
+        transition: .2s linear;
+    }
+
+    &__notification.hide {
+        opacity: 0;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 60px 0;
+        font-size: 2rem;
+        list-style: none;
+
+        @include media-medium {
+            padding: 50px 0;
+        }
+
+        @include media-small {
+            padding: 40px 0;
+        }
+
+        & li {
+            color: #f7d8b7;
+            text-shadow: 3px 3px 3px black;
+            cursor: pointer;
+            transition: .2s linear;
+
+            &:hover {
+                color: #fde6ce;
+            }
+        }
+
+        & .disabled {
+            pointer-events: none;
+            color: #beae9d;
+        }
+    }
+
+    &__go-back-button {
+        position: absolute;
+        bottom: 20px;
+        left: 50px;
+        border: none;
+        outline: none;
+        font-size: 1.5rem;
+        background-color: #f7d8b7;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .2s linear;
+
+        &:hover {
+            background-color: #fde6ce;
+        }
+    }
+
+    &__button-load {
+        border: 1px solid #f7d8b7;
+        outline: none;
+        font-size: 1.5rem;
+        font-size: 1.5rem;
+        color: #f7d8b7;
+        background-color: transparent;
+        padding: 5px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: .2s linear;
+
+        &:hover {
+            background-color: #f7d8b7;
+            color: rgba(48, 28, 12, 1);
+        }
+    }
 }
 
-.menu__notification {
-    position: absolute;
-    font-size: 1.6rem;
-    color: #7cca6f;
-    top: 15px;
-    left: 0;
-    text-align: center;
-    width: 100%;
-    opacity: 1;
-    transition: .2s linear;
-}
 
-.menu__notification.hide {
-    opacity: 0;
-}
-
-.menu_active {
-    position: absolute;
-    width: 100%;
-    padding: 20px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.menu_hidden {
-    position: absolute;
-    top: 0;
-    left: 100%;
-}
-
-.menu__list {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 60px 0;
-    font-size: 2rem;
-    list-style: none;
-}
-
-.menu__list li {
-    color: #f7d8b7;
-    text-shadow: 3px 3px 3px black;
-    cursor: pointer;
-    transition: .2s linear;
-}
-
-.menu__list .disabled {
-    pointer-events: none;
-    color: #beae9d;
-}
-
-.menu__list li:hover {
-    color: #fde6ce;
-}
-
-.menu__go-back-button {
-    position: absolute;
-    bottom: 20px;
-    left: 50px;
-    border: none;
-    outline: none;
-    font-size: 1.5rem;
-    background-color: #f7d8b7;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: .2s linear;
-}
-
-.menu__go-back-button:hover {
-    background-color: #fde6ce;
-}
-
-.menu__button-load {
-    border: 1px solid #f7d8b7;
-    outline: none;
-    font-size: 1.5rem;
-    font-size: 1.5rem;
-    color: #f7d8b7;
-    background-color: transparent;
-    padding: 5px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: .2s linear;
-}
-
-.menu__button-load:hover {
-    background-color: #f7d8b7;
-    color: rgba(48, 28, 12, 1);
-}
-
-.menu__saved-games {
+.saved-games {
     position: relative;
     width: 100%;
     height: 100%;
     color: #f7d8b7;
     text-shadow: 3px 3px 3px black;
     font-size: 2rem;
+
+    &.menu_hidden .carousel {
+        display: none;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__notification {
+        color: #f7d8b7;
+        text-shadow: 3px 3px 3px black;
+        font-size: 2rem;
+        text-align: center;
+    }
 }
 
-.menu__saved-games.menu_hidden .saved-games__carousel {
-    display: none;
-}
 
-.saved-games__header {
-    display: flex;
-    justify-content: space-around;
-}
-
-.saved-games__carousel {
+.carousel {
     position: absolute;
     top: 60px;
     left: 0;
     display: flex;
     justify-content: space-between;
     transition: .3s linear;
-}
 
-.carousel__arrow {
-    cursor: pointer;
-}
+    &__arrow {
+        cursor: pointer;
+    }
 
-.carousel__arrow:hover {
-    color: #fde6ce;
-}
+    &__arrow:hover {
+        color: #fde6ce;
+    }
 
-.saved-games__notification {
-    color: #f7d8b7;
-    text-shadow: 3px 3px 3px black;
-    font-size: 2rem;
-    text-align: center;
-}
+    &__item {
+        display: flex;
+        justify-content: space-around;
+        align-content: center;
+        width: 100%;
+        padding: 20px;
+    }
 
-.carousel__item {
-    display: flex;
-    justify-content: space-around;
-    align-content: center;
-    width: 100%;
-    padding: 20px;
-}
+    &__field {
+        display: flex;
+        flex-direction: column;
 
-.carousel__field {
-    display: flex;
-    flex-direction: column;
-}
+        &__row {
+            display: flex;
+            justify-content: space-between;
 
-.carousel__info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+            &-item {
+                border: 1px solid #f7d8b7;
+                padding: 5px;
+                font-size: 1.5rem;
+                text-align: center;
+                min-width: 30px;
 
-.carousel__field__row {
-    display: flex;
-    justify-content: space-between;
-}
+                @include media-medium {
+                    padding: 3px;
+                    min-width: 27px;
+                }
 
-.field__row-item {
-    border: 1px solid #f7d8b7;
-    padding: 5px;
-    font-size: 1.5rem;
-    text-align: center;
-    min-width: 30px;
+                @include media-small {
+                    padding: 2px;
+                    min-width: 23px;
+                }
+            }
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        @include media-medium {
+            font-size: 1.7rem;
+        }
+    }
 }
 
 .menu__win {
@@ -267,42 +324,46 @@ h2 {
 .best-scores {
     display: flex;
     justify-content: space-between;
+
+    &__title {
+        font-size: 1.6rem;
+        padding-bottom: 5px;
+    }
+
+    &__item {
+        font-size: 1.4rem;
+        padding: 5px 0;
+    }
 }
 
-.best-scores__title {
-    font-size: 1.6rem;
-    padding-bottom: 5px;
-}
-
-.best-scores__item {
-    font-size: 1.4rem;
-    padding: 5px 0;
-}
-
-.menu__settings {
+.settings {
     width: 100%;
     height: 100%;
     color: #f7d8b7;
     text-shadow: 3px 3px 3px black;
     font-size: 2rem;
     text-align: center;
-}
 
-.settings__container {
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-    justify-content: space-around;
-    align-items: center;
-}
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: 50%;
+        justify-content: space-around;
+        align-items: center;
 
-.settings__sound {
-    font-size: 40px !important;
-    cursor: pointer;
-}
+        @include media-medium {
+            height: 70%;
+        }
+    }
 
-.settings__sound:hover {
-    color: #fde6ce;
+    &__sound {
+        font-size: 40px !important;
+        cursor: pointer;
+
+        &:hover {
+            color: #fde6ce;
+        }
+    }
 }
 
 .game-field-with-border {
@@ -334,19 +395,19 @@ h2 {
     font-size: 4rem;
     font-weight: bold;
     user-select: none;
-}
 
-.tile_number {
-    background-image: url('../assets/tile-img.jpg');
-    background-position: center;
-    background-size: cover;
-    background-color: transparent;
-    box-shadow: inset 0 0 2px 1px #4c3116;
-    cursor: pointer;
-    z-index: 4;
-}
+    &_number {
+        background-image: url('../assets/tile-img.jpg');
+        background-position: center;
+        background-size: cover;
+        background-color: transparent;
+        box-shadow: inset 0 0 2px 1px #4c3116;
+        cursor: pointer;
+        z-index: 4;
+    }
 
-.tile_empty {
-    background-color: transparent;
-    border: none;
+    &_empty {
+        background-color: transparent;
+        border: none;
+    }
 }

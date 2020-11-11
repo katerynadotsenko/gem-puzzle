@@ -77,7 +77,7 @@ export default class MenuView {
 
     generateSavedGamesView() {
         const menuSavedGames = document.createElement('div');
-        menuSavedGames.classList.add('menu__saved-games', 'menu_hidden');
+        menuSavedGames.classList.add('saved-games', 'menu_hidden');
 
         menuSavedGames.innerHTML = `<div class="saved-games__header">
                                         <div class="carousel__arrow carousel__arrow_left">
@@ -88,10 +88,10 @@ export default class MenuView {
                                             <span class="material-icons">arrow_forward_ios</span>
                                         </div>
                                     </div>
-                                    <div class="saved-games__carousel"></div>`
+                                    <div class="carousel"></div>`
 
         /*const savedGamesCarousel = document.createElement('div');
-        savedGamesCarousel.classList.add('saved-games__carousel');
+        savedGamesCarousel.classList.add('carousel');
 
         const leftArrowButton = document.createElement('button');
         leftArrowButton.classList.add('carousel__left-arrow-button');
@@ -132,7 +132,7 @@ export default class MenuView {
 
             notification.style.display = 'none';
 
-            const savedGamesCarousel = document.querySelector('.saved-games__carousel');
+            const savedGamesCarousel = document.querySelector('.carousel');
             savedGamesCarousel.style.left = '0';
             savedGamesCarousel.style.width = `${savedGames.length * 100}%`;
             
@@ -153,7 +153,7 @@ export default class MenuView {
             JSON.parse(game.field).forEach((arr, i) => {
                 let row = '';
                 arr.forEach(num => {
-                    row += `<div class="field__row-item">${num}</div>`;
+                    row += `<div class="carousel__field__row-item">${num}</div>`;
                 });
                 savedGameField += `<div class="carousel__field__row">${row}</div>`;
             });
@@ -245,7 +245,7 @@ export default class MenuView {
 
     generateSettingsView() {
         let settings = document.createElement('div');
-        settings.classList.add('menu__settings', 'menu_hidden');
+        settings.classList.add('settings', 'menu_hidden');
         
         settings.innerHTML = `<div class="settings__container">
                                     <div class="settings__size">
