@@ -259,6 +259,14 @@ h2 {
         align-content: center;
         width: 100%;
         padding: 20px;
+
+        @include media-medium {
+            padding: 15px;
+        }
+
+        @include media-small {
+            padding: 10px;
+        }
     }
 
     &__field {
@@ -271,19 +279,19 @@ h2 {
 
             &-item {
                 border: 1px solid #f7d8b7;
-                padding: 5px;
-                font-size: 1.5rem;
+                font-size: 1rem;
+                padding: 3px;
                 text-align: center;
-                min-width: 30px;
+                min-width: 20px;
 
                 @include media-medium {
-                    padding: 3px;
-                    min-width: 27px;
+                    padding: 2px;
+                    min-width: 17px;
                 }
 
                 @include media-small {
-                    padding: 2px;
-                    min-width: 23px;
+                    padding: 1px;
+                    min-width: 15px;
                 }
             }
         }
@@ -389,12 +397,17 @@ h2 {
     display: flex;
     justify-content: center;
     border: 1px solid #bf9d7a;
-    border-radius: 10px;
+    border-radius: 5px;
     align-items: center;
     color: rgba(48, 28, 12, 0.7);
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
     user-select: none;
+
+    @include media-medium {
+        border-radius: 3px;
+        font-size: 2rem;
+    }
 
     &_number {
         background-image: url('../assets/tile-img.jpg');

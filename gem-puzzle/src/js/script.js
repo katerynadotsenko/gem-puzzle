@@ -240,7 +240,9 @@ window.onload = () => {
         infoField.moves = 1;
         infoField.updateMovesField(0);
         gameFieldView.clearGameField();
-        imgNum = tiles.generateImageNumber();
+        if (isImage) {
+            imgNum = tiles.generateImageNumber();
+        }
         tiles.init(gameFieldRowQuantity, tilesSize, isImage, imgNum);
         bindTileListeners();
     }
@@ -263,12 +265,17 @@ window.onload = () => {
 
         if (savedGame.imgNum) {
             imgNum = savedGame.imgNum;
+            isImage = true;
             tiles.generateImageToTiles(gameFieldRowQuantity, imgNum);
         } else {
+            isImage = false;
             imgNum = false;
         }
 
         bindTileListeners();
+
+        menu.changeSettings(gameFieldRowQuantity, isImage);
+
         winCombination = generateWinCombination();
     }
 

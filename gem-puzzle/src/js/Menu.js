@@ -132,6 +132,17 @@ export default class Menu {
         this.menuView.changeActiveMenu('.settings');
     }
 
+    changeSettings(gameFieldRowQuantity, isImage) {
+        const fieldSize = document.getElementById('field-size');
+        fieldSize.selectedIndex = `${gameFieldRowQuantity-3}`;
+        const mode = document.getElementById('mode');
+        if (isImage) {
+            mode.selectedIndex = '1';
+        } else {
+            mode.selectedIndex = '0';
+        }
+    }
+
 
     bindMenuItemListeners(item) {
         item.addEventListener('click', () => {
