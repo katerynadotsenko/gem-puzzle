@@ -5,7 +5,6 @@ import Menu from './Menu.js';
 import Data from './Data.js';
 
 
-//TODO fix time in score and saved games
 window.onload = () => {
 
     const data = new Data();
@@ -206,7 +205,7 @@ window.onload = () => {
             setTimeout(() => {
                 infoField.toggleMenu(infoMenu);
             }, 500);
-            addResultsToBestScores();
+            addResultsToBestScores(winTime, winMoves);
             bestScores = data.getBestScores();
             menu.updateBestScores(bestScores);
         }
@@ -214,7 +213,7 @@ window.onload = () => {
         return isWin;
     }
 
-    function addResultsToBestScores() {
+    function addResultsToBestScores(winTime, winMoves) {
         const date = new Date();
         let day = date.getDate(),
             month = date.getMonth() + 1,
@@ -223,13 +222,14 @@ window.onload = () => {
         day = day > 9 ? day : '0' + day;
         month = month > 9 ? month : '0' + month;
 
-        data.saveBestScore(`${day}/${month}/${year}`, infoField.moves, tiles.tilesArr.length, infoField.time)
+        data.saveBestScore(`${day}/${month}/${year}`, winMoves, tiles.tilesArr.length, winTime)
     }
 
 
     function saveGameCallback() {
-        console.log("tiles.moveHistory - ", tiles.moveHistory);
-        menu.saveGame(tiles.tilesArr, infoField.time, infoField.moves, imgNum, tiles.moveHistory);
+        const time = document.querySelector('.info__time').lastElementChild.textContent;
+        const moves = document.querySelector('.info__moves').lastElementChild.textContent;
+        menu.saveGame(tiles.tilesArr, time, moves, imgNum, tiles.moveHistory);
     }
 
 
@@ -249,7 +249,7 @@ window.onload = () => {
     }
 
     function loadSavedGame(savedGame) {
-        infoField.stopTimer(Number(savedGame.time));
+        infoField.startSavedTimer(savedGame.time);
         infoField.moves = savedGame.moves+1;
         infoField.updateMovesField(savedGame.moves);
         infoField.toggleMenu(infoMenu);
@@ -259,13 +259,14 @@ window.onload = () => {
         tilesSize = fieldSizePX/gameFieldRowQuantity;
         tiles.moveHistory = JSON.parse(savedGame.moveHistory);
         tiles.loadTiles(gameFieldRowQuantity, tiles.tilesArr, tilesSize);
+
         if (savedGame.imgNum) {
             imgNum = savedGame.imgNum;
             tiles.generateImageToTiles(gameFieldRowQuantity, imgNum);
-            console.log("savedGame.imgNum --- ", imgNum);
         } else {
             imgNum = false;
         }
+
         bindTileListeners();
         winCombination = generateWinCombination();
     }

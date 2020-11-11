@@ -54,7 +54,6 @@ export default class InfoField {
             seconds = time%60;
 
         return `${hours > 9 ? hours : '0' + hours}:${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}`
-        
     }
 
     startTimer() {
@@ -66,6 +65,13 @@ export default class InfoField {
 
     pauseTimer() {
         clearInterval(this.timer);
+    }
+
+    startSavedTimer(time) {
+        clearInterval(this.timer);
+        const timeArr = time.split(':');
+        this.time = Number(timeArr[0]*60*60 + timeArr[1]*60 + timeArr[2]);
+        this.updateTimerField(this.time);
     }
 
     stopTimer(time = 1) {
