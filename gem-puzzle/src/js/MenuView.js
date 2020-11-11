@@ -90,27 +90,12 @@ export default class MenuView {
                                     </div>
                                     <div class="carousel"></div>`
 
-        /*const savedGamesCarousel = document.createElement('div');
-        savedGamesCarousel.classList.add('carousel');
-
-        const leftArrowButton = document.createElement('button');
-        leftArrowButton.classList.add('carousel__left-arrow-button');
-        leftArrowButton.innerText = 'prev';
-
-        const rightArrowButton = document.createElement('button');
-        rightArrowButton.classList.add('carousel__right-arrow-button');
-        rightArrowButton.innerText = 'next';*/
-
         const notification = document.createElement('div');
         notification.classList.add('saved-games__notification');
         notification.innerText = 'You don\'t have any saved games yet';
         
-        /*menuSavedGames.append(savedGamesCarousel);
-        menuSavedGames.append(leftArrowButton);
-        menuSavedGames.append(rightArrowButton);*/
         menuSavedGames.append(notification);
         menuSavedGames.append(this.generateGoBackButton());
-        console.log("menuSavedGames - ", menuSavedGames);
         
         return menuSavedGames;
     }

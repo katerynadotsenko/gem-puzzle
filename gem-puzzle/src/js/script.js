@@ -4,7 +4,6 @@ import InfoField from './InfoField.js';
 import Menu from './Menu.js';
 import Data from './Data.js';
 
-//TODO change settings when load saved game
 
 window.onload = () => {
 
@@ -101,9 +100,7 @@ window.onload = () => {
     }
 
     function checkWindowSize() {
-        console.log(document.body.clientWidth);
         if (document.body.clientWidth < 485) {
-            console.log("< ", 465);
             fieldSizePX = document.body.clientWidth - 85;
             changeGameFieldSize();
         } else {
@@ -123,7 +120,6 @@ window.onload = () => {
 
     function toggleTilesImageBg(isImg) {
         isImage = isImg;
-        console.log("isImage - ", isImage);
         if (isImage) {
             imgNum = tiles.generateImageNumber();
             tiles.generateImageToTiles(gameFieldRowQuantity, imgNum);
@@ -138,7 +134,6 @@ window.onload = () => {
 
     function toggleSound() {
         isSound = !isSound;
-        console.log("script toggle sound - ", isSound);
     }
 
     function soundMenu() {
@@ -193,11 +188,7 @@ window.onload = () => {
     }
 
     function checkIsWin() {
-        
         isWin = winCombination === tiles.tilesArr.map(arr => arr.join('-')).join('-');
-        console.log(tiles.tilesArr.map(arr => arr.join('-')).join('-'));
-        console.log("winCombination - ", winCombination);
-        console.log("isWin - ", isWin);
         if (isWin) {
             const winTime = document.querySelector('.info__time').lastElementChild.textContent;
             const winMoves = document.querySelector('.info__moves').lastElementChild.textContent;

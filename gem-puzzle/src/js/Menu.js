@@ -28,7 +28,6 @@ export default class Menu {
     }
 
     showSavedGames() {
-        console.log('saved-games');
         const savedGames = this.getSavedGames();
         this.menuView.changeActiveMenu('.saved-games');
         if (!savedGames.length) {
@@ -82,7 +81,6 @@ export default class Menu {
     }
 
     showBestScores() {
-        console.log('best-scores');
         this.menuView.changeActiveMenu('.menu__best-scores'); 
     }
 
@@ -122,7 +120,6 @@ export default class Menu {
             } else {
                 e.target.innerText = `volume_off`;
             }
-            console.log("toggle sound");
         });
 
         this.menuView.renderMenuToDom(menuList, menuSavedGames, menuBestScores, win, menuSettings);
@@ -150,7 +147,6 @@ export default class Menu {
                 case 'save':
                     this.soundTick();
                     this.saveGameCallback();
-                    console.log('save');
                 break;
                 case 'new-game':
                     this.soundStartGame();

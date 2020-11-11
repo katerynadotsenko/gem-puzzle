@@ -31,9 +31,7 @@ export default class Tiles {
     }
 
     loadTiles(gameFieldRowQuantity, tilesArr, tilesSize) {
-        console.log("tilesArr loadTiles - ", tilesArr);
-        console.log("gameFieldRowQuantity loadTiles - ", gameFieldRowQuantity);
-        console.log("tilesSize loadTiles - ", tilesSize);
+
         this.tilesSize = tilesSize;
         this.tileView.renderTilesToDom(gameFieldRowQuantity, tilesArr, tilesSize);
     }
@@ -283,7 +281,7 @@ export default class Tiles {
                 h2 = img.height / gameFieldRowQuantity;
     
             for (let i = 0; i < gameFieldRowQuantity*gameFieldRowQuantity; i++) {
-                let x = (-w2*i) % (w2*gameFieldRowQuantity),
+                let x = i % gameFieldRowQuantity == 0 ? 0 : (-w2*i) % (w2*gameFieldRowQuantity),
                     y = -h2 * Math.floor(i/gameFieldRowQuantity);
 
                 canvas.width = w2;
@@ -293,12 +291,6 @@ export default class Tiles {
         
                 parts.push(canvas.toDataURL());
             }
-
-            /*for (let i = 0; i < gameFieldRowQuantity; i++) {
-                for (let j = 0; j < gameFieldRowQuantity ; j++) {
-                    newParts.push(parts[i + j * gameFieldRowQuantity]);
-                }
-            }*/
             
                 
             const tiles = document.querySelectorAll('.tile');
@@ -375,7 +367,6 @@ export default class Tiles {
                 tile.style.visibility = 'visible';
                 
                 if (!elemBelow) {
-                    console.log("elemBelow outside");
                     return;
                 }
 
@@ -434,11 +425,6 @@ export default class Tiles {
         if ((Math.abs(empty.dataset.top - tile.dataset.top) > 1 || Math.abs(empty.dataset.left - tile.dataset.left) > 1)
             || (Math.abs(empty.dataset.top - tile.dataset.top) !== 0 && Math.abs(empty.dataset.left - tile.dataset.left) !== 0)
             || !isTileNeededToMove) {
-            console.log('emptyPosition.top - ', empty.dataset.top);
-            console.log("emptyPosition.left - ", empty.dataset.left);
-            console.log("tile.dataset.top - ", tile.dataset.top);
-            console.log("tile.dataset.left - ", tile.dataset.left);
-            console.log("so far");
     
             empty.style.top = `${empty.dataset.top * this.tilesSize}px`;
             empty.style.left = `${empty.dataset.left * this.tilesSize}px`;
@@ -558,7 +544,6 @@ export default class Tiles {
             shuffleSteps = gameFieldRowQuantity**2 * 25;
         }
     
-        console.log("shuffleSteps - ", shuffleSteps);
         let emptyPosition = {};
         let prevStep = null;
 
@@ -648,13 +633,6 @@ export default class Tiles {
             
             prevStep = moveDirection;
         }
-        
-        
-        console.log("this.tilesArr - ", this.tilesArr);
-        console.log("this.moveHistory - ", this.moveHistory);
-
-        //console.log('isHasSolution - ', this.isHasSolution());
-
     }
 
     async autocompleteGame(tilesArr) {
@@ -709,7 +687,6 @@ export default class Tiles {
                     break;
             }
 
-            console.log(`${step} --- ${activeTileTop}-${activeTileLeft}`);
 
             if (step === -1) {
                 tile = document.querySelector(`[data-key="${this.tilesArr[this.tilesArr.length-1][this.tilesArr.length-1]}"]`);
@@ -725,9 +702,6 @@ export default class Tiles {
             });
             
         }
-
-        console.log("autocomplete -> ", this.tilesArr);
-
         
     }
 
@@ -739,24 +713,9 @@ export default class Tiles {
             array.push(...arr);
         });
 
-        let fieldSize = this.tilesArr.length;
-        console.log("fieldSize - ", fieldSize);
-        console.log("array - ", array);
-
-
-        //false
-        //array = [1,2,3,4,5,6,7,8,9,10,11,12,13,15,14,0];
-
-        //?
-        //array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 0, 29, 30, 31, 32, 35, 41, 36, 37, 38, 39, 33, 48, 34, 43, 44, 45, 46, 40, 47, 42];
-        //fieldSize = 7;
-        //true
-        //array = [5, 20, 28, 4, 18, 23, 7, 1, 25, 11, 22, 21, 37, 9, 8, 33, 19, 14, 39, 3, 24, 46, 13, 40, 2, 31, 0, 30, 32, 10, 16, 42, 48, 6, 38, 12, 29, 45, 15, 27, 41, 35, 44, 47, 43, 36, 34, 17, 26];
-        //fieldSize = 7;
-        
+        let fieldSize = this.tilesArr.length;     
 
         array.forEach((num, i) => {
-            console.log(array.slice(i));
                 if (num != 0) {
                     array.slice(i).forEach(n => {
                         if (num > n && n != 0) {
@@ -766,12 +725,8 @@ export default class Tiles {
                 } else {
                     let numRowOfEmpty = Math.ceil((i + 1) / fieldSize);
                     sum += numRowOfEmpty;
-                    console.log("numRowOfEmpty ---", numRowOfEmpty);
                 }
-                console.log("sum ---", sum);
         });
-
-        console.log(sum);
 
         return sum % 2 === 0
     }
