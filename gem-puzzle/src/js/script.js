@@ -5,6 +5,7 @@ import Menu from './Menu.js';
 import Data from './Data.js';
 
 import sounds from './sounds';
+import descript from './descriptView';
 
 
 window.onload = () => {
@@ -29,6 +30,8 @@ window.onload = () => {
 
     const gameFieldView = new GameFieldView();
     gameFieldView.init(fieldSizePX);
+
+    document.body.append(descript);
 
     const tiles = new Tiles(() => {
         infoField.updateMovesField(infoField.moves++);

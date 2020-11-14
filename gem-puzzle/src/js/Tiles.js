@@ -440,10 +440,6 @@ export default class Tiles {
 
             moveDirection = this.moveHistory.pop();
 
-            /*activeTileTop = emptyPosition.top;
-            activeTileLeft = emptyPosition.left;*/
-
-
             switch (moveDirection) {
                 case 1:
                     activeTileTop = emptyPosition.top + 1;
