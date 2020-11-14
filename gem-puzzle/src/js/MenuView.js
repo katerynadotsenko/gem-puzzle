@@ -116,6 +116,9 @@ export default class MenuView {
             const notification = document.querySelector('.saved-games__notification');
 
             notification.style.display = 'none';
+            
+            leftArrowButton.style.display = 'block';
+            rightArrowButton.style.display = 'block';
 
             const savedGamesCarousel = document.querySelector('.carousel');
             savedGamesCarousel.style.left = '0';
