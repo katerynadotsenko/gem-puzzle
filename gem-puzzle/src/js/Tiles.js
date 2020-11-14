@@ -41,210 +41,6 @@ export default class Tiles {
         this.tileView.changeTilesSize(tilesSize);
     }
 
-   /* async autocompleteGame(tilesArr) {
-        this.tilesArr = tilesArr;
-
-        const tilesQuantity = this.tilesArr.length ** 2 ;
-        console.log('tilesQuantity - ', tilesQuantity);
-
-        let emptyTilePos = {
-            top: null,
-            left: null
-        };
-
-        let activeTilePos = {
-            top: null,
-            left: null
-        };
-
-        
-
-        
-        this.tilesArr.forEach((rowArr, row) => {
-            rowArr.forEach((num, col) => {
-                if (num == 0) {
-                    emptyTilePos.top = row;
-                    emptyTilePos.left = col;
-                };
-            });
-        });
-
-
-        for (let i = 1; i < tilesQuantity; i++) {
-            for (let j = 0; j < this.tilesArr.length; j++) {
-                for (let k = 0; k < this.tilesArr[j].length; k++) {
-                    if (this.tilesArr[j][k] == i) {
-                        activeTilePos.top = j;
-                        activeTilePos.left = k;
-
-                        if (this.tilesArr[j][k] == 1) {
-                            await this.moveTileToItPosition(activeTilePos, emptyTilePos);
-                            console.log("next");
-                        }
-                    };
-                }
-            }
-        }
-
-    }
-
-    async moveTileToItPosition(activeTilePos, emptyTilePos) {
-        console.log("start");
-        let tileCompletePosition = {
-            top: 0,
-            left: 0
-        };
-
-        let tileToExchPos = {
-            top: null,
-            left: null
-        };
-
-
-        console.log('activeTilePos.top - ', activeTilePos.top);
-        console.log('activeTilePos.left - ', activeTilePos.left);
-            while (activeTilePos.top != tileCompletePosition.top && activeTilePos.left != tileCompletePosition.left) {
-
-                console.log('vertical movement');
-                while (emptyTilePos.top != activeTilePos.top - 1) {
-                    if (emptyTilePos.top > activeTilePos.top - 1) {
-                        if (emptyTilePos.top - 1 < 0) {
-                            break;
-                        }
-                        tileToExchPos.top = emptyTilePos.top - 1;
-                        tileToExchPos.left = emptyTilePos.left;
-                        emptyTilePos.top = emptyTilePos.top - 1;
-                    } else {
-                        tileToExchPos.top = emptyTilePos.top + 1;
-                        tileToExchPos.left = emptyTilePos.left;
-                        emptyTilePos.top = emptyTilePos.top + 1;
-                    };
-                    console.log('tileToExchPos.top - ', tileToExchPos.top);
-                    console.log('tileToExchPos.left - ', tileToExchPos.left);
-
-                    if (tileToExchPos.top == activeTilePos.top && tileToExchPos.left == activeTilePos.left) break;
-
-                    const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
-                    console.log("tile to exch - ", tile);
-                
-                    await new Promise(resolve => {
-                        setTimeout(() => {
-                            this.moveTile(tile, true, true);
-                            resolve();
-                        }, 500);
-                    });  
-                };
-            
-                console.log('activeTilePos.top - ', activeTilePos.top);
-                console.log('activeTilePos.left - ', activeTilePos.left);
-
-            console.log('horizontal movement');
-            console.log(`${activeTilePos.top}==${tileCompletePosition.top}`);
-            console.log(`${emptyTilePos.top}==${activeTilePos.top - 1}`);
-            console.log('horizontal movement');
-                if (activeTilePos.top == tileCompletePosition.top && emptyTilePos.top == activeTilePos.top - 1) {
-                    //move empty to left
-                    console.log("works!!!");
-                    while (emptyTilePos.left != tileCompletePosition.left) {
-                        if (emptyTilePos.left > tileCompletePosition.left) {
-                            tileToExchPos.top = emptyTilePos.top;
-                            tileToExchPos.left = emptyTilePos.left - 1;
-                            emptyTilePos.left = emptyTilePos.left - 1;
-                        } else {
-                            tileToExchPos.top = emptyTilePos.top;
-                            tileToExchPos.left = emptyTilePos.left + 1;
-                            emptyTilePos.left = emptyTilePos.left + 1;
-                        };
-
-                        const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
-                        console.log("tile to exch - ", tile);
-                    
-                        await new Promise(resolve => {
-                            setTimeout(() => {
-                                this.moveTile(tile, true, true);
-                                resolve();
-                            }, 500);
-                        }); 
-                    }
-                }
-
-                while (emptyTilePos.left != activeTilePos.left) {
-                    if (emptyTilePos.left > activeTilePos.left) {
-                        tileToExchPos.top = emptyTilePos.top;
-                        tileToExchPos.left = emptyTilePos.left - 1;
-                        emptyTilePos.left = emptyTilePos.left - 1;
-                    } else {
-                        tileToExchPos.top = emptyTilePos.top;
-                        tileToExchPos.left = emptyTilePos.left + 1;
-                        emptyTilePos.left = emptyTilePos.left + 1;
-                    };
-                    console.log('tileToExchPos.top - ', tileToExchPos.top);
-                    console.log('tileToExchPos.left - ', tileToExchPos.left);
-
-                    if (tileToExchPos.top == activeTilePos.top && tileToExchPos.left == activeTilePos.left) {
-                        console.log('exit');
-                        break;
-                    };
-
-                    const tile = document.querySelector(`[data-key="${this.tilesArr[tileToExchPos.top][tileToExchPos.left]}"]`);
-                    console.log("tile to exch - ", tile);
-                
-                    await new Promise(resolve => {
-                        setTimeout(() => {
-                            this.moveTile(tile, true, true);
-                            resolve();
-                        }, 500);
-                    });  
-                };
-
-                if (emptyTilePos.top + 1 == activeTilePos.top && emptyTilePos.left == activeTilePos.left) {
-                    console.log("its ok");
-                } else {
-                    console.log("check");
-                };
-                console.log(`${activeTilePos.top} --- ${emptyTilePos.top + 1}`);
-
-                //move tile to top
-                if (tileCompletePosition.top < activeTilePos.top && activeTilePos.top == emptyTilePos.top + 1) {
-                    const tile = document.querySelector(`[data-key="${this.tilesArr[activeTilePos.top][activeTilePos.left]}"]`);
-                    let activeTop = activeTilePos.top;
-                    let activeLeft = activeTilePos.left;
-                    activeTilePos.top = emptyTilePos.top;
-                    activeTilePos.left = emptyTilePos.left;
-                    emptyTilePos.top = activeTop;
-                    emptyTilePos.left = activeLeft;
-                    await new Promise(resolve => {
-                        setTimeout(() => {
-                            this.moveTile(tile, true, true);
-                            resolve();
-                        }, 500);
-                    }); 
-                };
-
-                //move tile to left
-                if (tileCompletePosition.left < activeTilePos.left && activeTilePos.left == emptyTilePos.left + 1) {
-                    const tile = document.querySelector(`[data-key="${this.tilesArr[activeTilePos.top][activeTilePos.left]}"]`);
-                    let activeTop = activeTilePos.top;
-                    let activeLeft = activeTilePos.left;
-                    activeTilePos.top = emptyTilePos.top;
-                    activeTilePos.left = emptyTilePos.left;
-                    emptyTilePos.top = activeTop;
-                    emptyTilePos.left = activeLeft;
-                    await new Promise(resolve => {
-                        setTimeout(() => {
-                            this.moveTile(tile, true, true);
-                            resolve();
-                        }, 500);
-                    }); 
-                }
-
-            }
-            
-            
-    }*/
-
-
-
     clearTilesFromImage() {
         const tiles = document.querySelectorAll('.tile');
         let tileNumber = 0;
@@ -308,36 +104,9 @@ export default class Tiles {
         }
     }
 
-
-
     bindTileListeners(tile) {
 
-        if (tile.dataset.key == 0) return;
-
-        /*const handleDragEnd = (e) => {
-            e.preventDefault();
-            let data = e.dataTransfer.getData("tile");
-            this.moveTile(document.querySelector(`[data-key="${data}"]`));
-        }
-
-        const handleDragStart = (e) => {
-            e.dataTransfer.setData("tile", e.target.dataset.key);
-        }
-
-        if (tile.dataset.key == 0) {
-            tile.draggable = false;
-            tile.addEventListener('drop', handleDragEnd, false);
-            tile.addEventListener('dragover', (e) => e.preventDefault());
-            return;
-        };
-
-        tile.addEventListener('click', (e) => {
-            this.moveTile(e.target);
-        });
-
-        tile.addEventListener('dragstart', handleDragStart, false);*/
-
-        
+        if (tile.dataset.key == 0) return; 
 
         tile.onmousedown = (e) => {
             if (e.which != 1) return;
@@ -400,12 +169,10 @@ export default class Tiles {
             };
 
             function enterDroppable() {
-                //elem.style.background = 'pink';
                 isTileNeededToMove = true;
             }
           
             function leaveDroppable() {
-                //elem.style.background = 'transparent';
                 isTileNeededToMove = false;
             }
     
@@ -660,45 +427,51 @@ export default class Tiles {
             });
         });
 
-//this.moveHistory.length - 1
-        for (let step = this.moveHistory.length-1; step >= -1; step--) {
-            
-            moveDirection = this.moveHistory[step];
+        const info = document.querySelector('.info');
 
-            activeTileTop = emptyPosition.top;
-            activeTileLeft = emptyPosition.left;
+        const stepsQuantity = this.moveHistory.length-1;
+
+        for (let step = stepsQuantity; step >= 0; step--) {
+            const stopAutoComplete = info.classList.contains("active");
+
+            if (stopAutoComplete) {
+                return;
+            }
+
+            moveDirection = this.moveHistory.pop();
+
+            /*activeTileTop = emptyPosition.top;
+            activeTileLeft = emptyPosition.left;*/
 
 
             switch (moveDirection) {
                 case 1:
+                    activeTileTop = emptyPosition.top + 1;
                     emptyPosition.top = emptyPosition.top + 1;
+                    activeTileLeft = emptyPosition.left;
                     break;
                 case 2:
-                    
+                    activeTileLeft = emptyPosition.left - 1;
                     emptyPosition.left = emptyPosition.left - 1;
+                    activeTileTop = emptyPosition.top;
                     break;
                 case 3:
-                    
+                    activeTileTop = emptyPosition.top - 1;
                     emptyPosition.top = emptyPosition.top - 1;
+                    activeTileLeft = emptyPosition.left;
                     break;
                 case 4:
-                   
+                    activeTileLeft = emptyPosition.left + 1;
                     emptyPosition.left = emptyPosition.left + 1;
+                    activeTileTop = emptyPosition.top;
                     break;
             }
 
-
-            if (step === -1) {
-                tile = document.querySelector(`[data-key="${this.tilesArr[this.tilesArr.length-1][this.tilesArr.length-1]}"]`);
-            } else {
-                tile = document.querySelector(`[data-key="${this.tilesArr[activeTileTop][activeTileLeft]}"]`);
-            }
+            tile = document.querySelector(`[data-key="${this.tilesArr[activeTileTop][activeTileLeft]}"]`);
 
             await new Promise(resolve => {
-                setTimeout(async () => {
-                    await this.moveTile(tile, true, true);
-                    resolve();
-                }, 120);
+                this.moveTile(tile, true, true);
+                setTimeout(resolve, 120);
             });
             
         }

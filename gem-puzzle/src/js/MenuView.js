@@ -135,7 +135,7 @@ export default class MenuView {
         if (game.imgNum) {
             savedGameField = `<img width='120px' src='assets/images/${game.imgNum}.jpg'>`;
         } else {
-            JSON.parse(game.field).forEach((arr, i) => {
+            JSON.parse(game.field).forEach(arr => {
                 let row = '';
                 arr.forEach(num => {
                     row += `<div class="carousel__field__row-item">${num}</div>`;
