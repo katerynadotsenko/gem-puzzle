@@ -4,6 +4,8 @@ import InfoField from './InfoField.js';
 import Menu from './Menu.js';
 import Data from './Data.js';
 
+import sounds from './sounds';
+
 
 window.onload = () => {
 
@@ -138,37 +140,32 @@ window.onload = () => {
 
     function soundMenu() {
         if (!isSound) return;
-        const sound = document.querySelector(`audio[data-sound="menu`);
-        sound.currentTime = 0;
-        sound.play();
+        sounds.menuSound.currentTime = 0;
+        sounds.menuSound.play();
     }
 
     function soundTick() {
         if (!isSound) return;
-        const sound = document.querySelector(`audio[data-sound="tick`);
-        sound.currentTime = 0;
-        sound.play();
+        sounds.tickSound.currentTime = 0;
+        sounds.tickSound.play();
     }
 
     function soundStartGame() {
         if (!isSound) return;
-        const sound = document.querySelector(`audio[data-sound="start-game`);
-        sound.currentTime = 0;
-        sound.play();
+        sounds.startGame.currentTime = 0;
+        sounds.startGame.play();
     }
 
     function soundMoveTile() {
         if (!isSound) return;
-        const sound = document.querySelector(`audio[data-sound="main`);
-        sound.currentTime = 0;
-        sound.play();
+        sounds.mainSound.currentTime = 0;
+        sounds.mainSound.play();
     }
 
     function soundWin() {
         if (!isSound) return;
-        const sound = document.querySelector(`audio[data-sound="win`);
-        sound.currentTime = 0;
-        sound.play();
+        sounds.winSound.currentTime = 0;
+        sounds.winSound.play();
     }
 
 
